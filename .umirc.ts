@@ -1,3 +1,4 @@
+// @ts-ignore
 import { defineConfig } from 'umi/lib/defineConfig';
 import {resolve} from "path";
 let BundleAnalyzerPlugin = require("umi-webpack-bundle-analyzer").BundleAnalyzerPlugin;

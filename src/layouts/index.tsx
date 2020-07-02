@@ -35,7 +35,11 @@ export default class BasicLayout extends React.Component {
 
   render() {
 
-    const { children } = this.props;
+    const { children, location } = this.props;
+
+    if (location.pathname === '/login'){
+      return children
+    }
 
     return <div>
       <Layout className={styles.container}>
