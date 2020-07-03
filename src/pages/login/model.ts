@@ -1,6 +1,8 @@
 // import { stringify } from 'querystring';
-import { Effect } from 'umi';
-import {login, getHi} from '@/services/login'
+import { Effect, router } from 'umi';
+import { login, getHi } from '@/services/login';
+
+// import { pathToRegexp } from 'path-to-regexp';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -9,14 +11,15 @@ export interface StateType {
 export interface LoginModelType {
   namespace: string;
   state: StateType;
+  subscriptions: object,
   effects: {
     login: Effect;
     getHi: Effect;
   };
-  reducers: {
-  };
+  reducers: {};
 }
 
+// @ts-ignore
 const Model: LoginModelType = {
   namespace: 'login',
 
@@ -24,29 +27,49 @@ const Model: LoginModelType = {
     status: undefined,
   },
 
+  subscriptions: {
+// @ts-ignore
+    setup({ dispatch, history }) {
+      history.listen((location: any) => {
+        console.log(location);
+        if (location.pathname === '/login'){
+          dispatch({
+            type: 'getHi'
+          })
+        }
+        // console.log(pathToRegexp)
+        // if (pathToRegexp('/login').exec(location.pathname)) {
+        //   console.log(123);
+        // }
+      });
+    },
+  },
+
   effects: {
-    *login({ payload }, { call, put }) {
+    * login({ payload }, { call, put }) {
       const { status, data } = yield call(login, payload);
 
-      if (status === 200){
-        console.log(data)
-        localStorage.setItem('authrization', data.token)
+      if (status === 200) {
+        console.log(data);
+        localStorage.setItem('authorization', data.token);
         yield put({
-          type: 'getHi'
-        })
+          type: 'getHi',
+        });
+        router.push('/');
+
       }
     },
-    *getHi({ payload }, { call, put }) {
+    * getHi({ payload }, { call, put }) {
       const { status, data } = yield call(getHi, payload);
 
-      if (status === 200){
-        console.log(data)
+      console.log(status, data)
+      if (status === 200) {
+        console.log(data);
       }
     },
   },
 
-  reducers: {
-  },
+  reducers: {},
 };
 
 export default Model;

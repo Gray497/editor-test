@@ -37,6 +37,9 @@ export function get(url, params) {
     url,
     method: 'get',
     params,
+    headers: {
+      'authorization': localStorage.getItem('authorization'),
+    }
   })
 }
 

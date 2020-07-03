@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styles from './index.less';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Popover, Badge, List, Avatar } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
   VideoCameraOutlined,
   UploadOutlined,
+  BellOutlined,
+  RightOutlined,
 } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
 import { Link } from 'umi';
+import moment from 'moment';
+
+const { SubMenu } = Menu;
 
 const getMenuData = () => [
   { icon: <UserOutlined/>, label: '字典管理', route: '/' },
@@ -35,10 +40,11 @@ export default class BasicLayout extends React.Component {
 
   render() {
 
+    // @ts-ignore
     const { children, location } = this.props;
 
-    if (location.pathname === '/login'){
-      return children
+    if (location.pathname === '/login') {
+      return children;
     }
 
     return <div>
@@ -60,6 +66,20 @@ export default class BasicLayout extends React.Component {
               className: styles.trigger,
               onClick: this.toggle,
             })}
+            <Menu key="user" mode="horizontal" onClick={(key) => {
+              console.log(123, key);
+            }}>
+              <SubMenu title={<div className={styles.rightContent}>
+                <span style={{ color: '#999',
+                  marginRight: 4 }}>
+                Hi，超级管理员</span>
+                <Avatar icon={<UserOutlined />} />
+              </div>}>
+                <Menu.Item key="SignOut">
+                  登出
+                </Menu.Item>
+              </SubMenu>
+            </Menu>
           </Header>
           <Content
             className={styles['site-layout-background']}
