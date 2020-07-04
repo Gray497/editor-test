@@ -1,3 +1,12 @@
+
+:global{
+  .bf-video-player{
+    video{
+      max-height: 80vh;
+    }
+  }
+}
+
 .container{
   height: 100vh;
 }
@@ -22,9 +31,12 @@
 
 .site-layout .site-layout-background {
   background: #fff;
+  padding: 0;
+  min-height: auto !important;
 }
 
-.site-layout-background{
+.header{
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -41,3 +53,19 @@
   align-items: center;
   justify-content: center;
 }
+
+.breadcrumb{
+  background-color: #FFFFFF;
+  padding: 20px;
+  color: rgba(0,0,0,.3);
+  a{
+    color: rgba(0,0,0,.3);
+  }
+  a:hover{
+    color: #1890ff;
+  }
+  .breadSplit{
+    margin: 0 10px;
+  }
+}
+

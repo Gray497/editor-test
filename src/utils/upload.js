@@ -58,7 +58,6 @@ export default {
     formData.append('mediaName', file.name)
     formData.append('mediaSize', file.size / 1024 / 1024)
     let xhr = new XMLHttpRequest()
-
     fileList[index].xhr = xhr
 
     // xhr.timeout = 10000;
@@ -137,7 +136,7 @@ export default {
         } else {
           fileList[index].progress = 100
           fileList[index].state = 'error'
-          fileList[index].errorText = ret.msg
+          fileList[index].errorText = 'error'
           callback(fileList)
           console.debug(xhr.responseText);
         }
@@ -147,6 +146,7 @@ export default {
     // xhr.open('POST', 'https://nodeapi.yunser.com/net/files', true)
     xhr.withCredentials = true
     xhr.open('POST', config.API + '/upload', true)
+    xhr.setRequestHeader('authorization', localStorage.getItem('authorization'));
     xhr.send(formData);
   },
   abort(index, callback) {

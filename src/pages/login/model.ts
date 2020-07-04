@@ -1,5 +1,6 @@
 // import { stringify } from 'querystring';
-import { Effect, router } from 'umi';
+import { Effect } from 'umi';
+import {routerRedux} from 'dva/router'
 import { login, getHi } from '@/services/login';
 
 // import { pathToRegexp } from 'path-to-regexp';
@@ -31,11 +32,8 @@ const Model: LoginModelType = {
 // @ts-ignore
     setup({ dispatch, history }) {
       history.listen((location: any) => {
-        console.log(location);
+        // console.log(location);
         if (location.pathname === '/login'){
-          dispatch({
-            type: 'getHi'
-          })
         }
         // console.log(pathToRegexp)
         // if (pathToRegexp('/login').exec(location.pathname)) {
@@ -48,15 +46,12 @@ const Model: LoginModelType = {
   effects: {
     * login({ payload }, { call, put }) {
       const { status, data } = yield call(login, payload);
-
       if (status === 200) {
-        console.log(data);
         localStorage.setItem('authorization', data.token);
-        yield put({
-          type: 'getHi',
-        });
-        router.push('/');
-
+        // yield put({
+        //   type: 'getHi',
+        // });
+        yield put(routerRedux.push('/'));
       }
     },
     * getHi({ payload }, { call, put }) {

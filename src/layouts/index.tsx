@@ -11,21 +11,24 @@ import {
   RightOutlined,
 } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
-import { Link } from 'umi';
+import { connect, Link } from 'umi';
 import moment from 'moment';
 
 const { SubMenu } = Menu;
 
 const getMenuData = () => [
-  { icon: <UserOutlined/>, label: '字典管理', route: '/' },
-  { icon: <UserOutlined/>, label: '用户管理', route: '/' },
-  { icon: <UploadOutlined/>, label: '菜单管理', route: '/index2' },
-  { icon: <UserOutlined/>, label: '角色管理', route: '/' },
-  { icon: <VideoCameraOutlined/>, label: '日志管理', route: '/index' },
+  { icon: <UserOutlined/>, label: '首页', route: '/' },
+  { icon: <UserOutlined/>, label: '革命先烈-管理', route: '/gmxl' },
+  { icon: <UserOutlined/>, label: '立功受奖-管理', route: '/1' },
+  { icon: <UploadOutlined/>, label: '创业先锋-管理', route: '/index2' },
+  { icon: <UserOutlined/>, label: '政策文件-管理', route: '/d' },
+  { icon: <VideoCameraOutlined/>, label: '办事流程-管理', route: '/index' },
 ];
 
 const { Header, Sider, Content } = Layout;
 
+// @ts-ignore
+@connect(({ dispatch }) => ({ dispatch }))
 export default class BasicLayout extends React.Component {
 
   state = {
@@ -41,7 +44,7 @@ export default class BasicLayout extends React.Component {
   render() {
 
     // @ts-ignore
-    const { children, location } = this.props;
+    const { children, location, dispatch } = this.props;
 
     if (location.pathname === '/login') {
       return children;
@@ -51,8 +54,9 @@ export default class BasicLayout extends React.Component {
       <Layout className={styles.container}>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className={styles.logo}/>
-          <Menu theme="dark" mode="inline">
-            {getMenuData().map(({ icon, label, route }, index) => <Menu.Item key={index} icon={icon} onClick={() => {
+          {location.pathname}
+          <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]}>
+            {getMenuData().map(({ icon, label, route }, index) => <Menu.Item key={route} icon={icon} onClick={() => {
                 console.log(route);
               }}>
                 <Link to={route} key={index}>{label}</Link>
@@ -61,13 +65,18 @@ export default class BasicLayout extends React.Component {
           </Menu>
         </Sider>
         <Layout className={styles['site-layout']}>
-          <Header className={styles['site-layout-background']} style={{ padding: 0 }}>
+          <Header className={styles.header} style={{ padding: 0 }}>
             {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
               className: styles.trigger,
               onClick: this.toggle,
             })}
-            <Menu key="user" mode="horizontal" onClick={(key) => {
-              console.log(123, key);
+            <Menu key="user" mode="horizontal" onClick={(param) => {
+              const {key} = param;
+              if (key === 'logout'){
+                dispatch({
+                  type: 'app/logout'
+                })
+              }
             }}>
               <SubMenu title={<div className={styles.rightContent}>
                 <span style={{ color: '#999',
@@ -75,12 +84,18 @@ export default class BasicLayout extends React.Component {
                 Hi，超级管理员</span>
                 <Avatar icon={<UserOutlined />} />
               </div>}>
-                <Menu.Item key="SignOut">
+                <Menu.Item key="logout">
                   登出
                 </Menu.Item>
               </SubMenu>
             </Menu>
           </Header>
+
+          <div className={styles.breadcrumb}>
+            <Link to={location.pathname}>{getMenuData().find(val => val.route === location.pathname).label}</Link>
+            <span className={styles.breadSplit}>/</span>
+            <span>编辑</span>
+          </div>
           <Content
             className={styles['site-layout-background']}
             style={{

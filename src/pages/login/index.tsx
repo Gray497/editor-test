@@ -15,19 +15,11 @@ class Login extends PureComponent {
 
   render() {
     // @ts-ignore
-    const { dispatch, loading } = this.props
+    const { dispatch, loading } = this.props;
 
     const handleOk = (values: any) => {
       dispatch({ type: 'login/login', payload: values })
     }
-    let footerLinks = [
-      {
-        key: 'github',
-        title: <GithubOutlined />,
-        href: 'https://github.com/zuiidea/antd-admin',
-        blankTarget: true,
-      },
-    ]
 
 
     return (
@@ -57,7 +49,7 @@ class Login extends PureComponent {
               <Button
                 type="primary"
                 htmlType="submit"
-                loading={loading.effects.login}
+                loading={loading.effects['login/login']}
               >
                 <span>登录</span>
               </Button>

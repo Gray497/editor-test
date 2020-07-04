@@ -15,3 +15,7 @@ export function login (params: LoginParamsType) {
 export function getHi () {
   return get(`/`)
 }
+
+export function logout() {
+  return post(`/logout`)
+}

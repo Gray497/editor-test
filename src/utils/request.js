@@ -2,7 +2,7 @@ import axios from 'axios'
 import config from 'utils/config';
 import { message } from 'antd'
 import qs from 'qs'
-
+import {routerRedux} from 'dva/router'
 
 const instance = axios.create({
   baseURL: config.API,
@@ -23,6 +23,14 @@ instance.interceptors.response.use(
     return response
   },
   error => {
+    console.log(error.response)
+    if (error.response.status === 401){
+      window.location = '/login';
+      // routerRedux.push('/login');
+    }
+    message.error(error.response.data.errorMsg)
+    // console.log(error.response)
+    // console.log(error.response.data.errorMsg)
     // if (error.response) {
     // }
     return Promise.resolve(error.response)
