@@ -48,9 +48,6 @@ const Model: LoginModelType = {
       const { status, data } = yield call(login, payload);
       if (status === 200) {
         localStorage.setItem('authorization', data.token);
-        // yield put({
-        //   type: 'getHi',
-        // });
         yield put(routerRedux.push('/'));
       }
     },

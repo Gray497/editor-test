@@ -12,6 +12,7 @@
     "strict": true,
     "paths": {
       "@/*": ["src/*"],
+      "@/src/utils": ["src/utils/*"],
       "@/components": ["src/components/*"],
       "@tmp/*": ["src/pages/.umi/*"],
       "@@/*": ["src/.umi/*"]

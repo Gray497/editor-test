@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "start": "umi dev",
+    "dev": "umi dev",
     "build": "umi build",
     "build-analyze": "cross-env ANALYZE=1 umi build",
     "test": "umi test",

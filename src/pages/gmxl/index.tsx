@@ -1,24 +1,24 @@
 import React from 'react';
-import { Table, Space } from 'antd';
+import { Table, Space, Button, Select, Modal } from 'antd';
 import styles from './index.less';
 import Detail from './detail';
 import { connect, Link } from 'umi';
+import CommonTable from '@/components/CommonTable';
+import { getGoToFilterURL } from 'utils/help';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+const { Option } = Select;
+const { confirm } = Modal;
 
 // @ts-ignore
-@connect(({ dispatch }) => ({ dispatch }))
+@connect(({ gmxl,}: state, dispatch) => ({
+  // dispatch,
+  gmxl
+}))
 export default class SiderDemo extends React.Component {
   render() {
-    const { location } = this.props;
-    const { query: { id } } = location;
-    const dataSource = [
-      {
-        id: '1',
-        title: '胡彦斌',
-        cover: 32,
-        status: '西湖区湖底公园1号',
-        introduce: '12321',
-      },
-    ];
+    const { location:{ query}, gmxl:{dataSource, pagination}, history, dispatch } = this.props;
+    const { id, type } = query;
 
     const columns = [
       {
@@ -43,17 +43,33 @@ export default class SiderDemo extends React.Component {
       },
       {
         title: '大致介绍',
-        dataIndex: 'introduce',
-        key: 'introduce',
+        dataIndex: 'desc',
+        key: 'desc',
       },
       {
         title: '操作',
         key: 'op',
         render(value: string, record: object) {
-          console.log(record);
           return <Space size="middle">
-            <Link to={`./gmxl?id=${record.id}`}>编辑</Link>
-            <a>删除</a>
+            <Link to={`./gmxl?id=${record.id}&type=update`}>编辑</Link>
+            <a style={{color: 'red'}} onClick={() => {
+              confirm({
+                title: '删除记录？',
+                icon: <ExclamationCircleOutlined />,
+                content: `确定删除【${record.title}】`,
+                okText: '确定',
+                cancelText: '取消',
+                onOk() {
+                  dispatch({
+                    type: 'gmxl/remove',
+                    payload:{
+                      id: record.id
+                    }
+                  })
+                },
+                onCancel() {},
+              });
+            }}>删除</a>
           </Space>;
         },
       },
@@ -62,16 +78,35 @@ export default class SiderDemo extends React.Component {
     const tableProps = {
       dataSource: dataSource,
       columns: columns,
+      pagination,
       rowKey: (record: object) => JSON.stringify(record),
     };
 
-    if (!!id){
-      return <Detail />
+    if (!!id || !!type){
+      return <Detail {...this.props}/>
     }
 
     return (
       <div className={styles.wrap}>
-        <Table {...tableProps}/>
+        <div className={styles.top}>
+          <div>
+            状态：<Select defaultValue="all" style={{ width: 120 }} onChange={(value: String|number) => {
+            // if ()
+            console.log(history.push)
+            if (value === 'all'){
+              history.push(getGoToFilterURL({},['status']));
+            } else {
+              history.push(getGoToFilterURL({status: value}));
+            }
+          }}>
+            <Option value={'all'}>全部</Option>
+            <Option value={0}>隐藏</Option>
+            <Option value={1}>显示</Option>
+          </Select>
+          </div>
+          <Button type='primary'><Link to={`./gmxl?type=create`}>新建</Link></Button>
+        </div>
+        <CommonTable {...tableProps}/>
       </div>
     );
   }

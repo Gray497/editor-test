@@ -4,12 +4,28 @@ import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import uploadManager from 'utils/upload';
 import config from 'utils/config';
+import _ from 'lodash';
 
 export default class EditorDemo extends React.Component {
 
   state = {
     editorState: BraftEditor.createEditorState(),
+    hasInit: false,
   };
+
+  static getDerivedStateFromProps(nextProps, preState) {
+    // console.log(!_.isEmpty(nextProps.value))
+    // console.log(preState.editorState.toHTML())
+    // console.log(preState.editorState.toHTML() !== '<p></p>')
+    if (!_.isEmpty(nextProps.value) && preState.editorState.toHTML() === '<p></p>' && !preState.hasInit){
+      console.log('富文本之前有值',nextProps.value)
+      return {
+        editorState: BraftEditor.createEditorState(nextProps.value),
+        hasInit: true
+      }
+    }
+    return null
+  }
 
 
   handleChange = (editorState) => {

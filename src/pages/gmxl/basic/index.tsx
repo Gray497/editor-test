@@ -1,92 +1,109 @@
-import { Badge, Card, Descriptions, Divider, Table, Row, Col, Upload, message, Form, Input, Radio, Button } from 'antd';
-import React, { Component } from 'react';
-import { connect, Dispatch } from 'umi';
+import { Divider, Row, Col, Upload, message, Form, Input, Radio, Button } from 'antd';
+import React from 'react';
+import _ from 'lodash';
 import styles from './style.less';
-import { InboxOutlined } from '@ant-design/icons';
 import Editor from '@/components/Editor';
-
-const { Dragger } = Upload;
+import config from '@/utils/config';
 const FormItem = Form.Item;
 
-export default () => {
+export default (props) => {
 
-  // return <div>123</div>
-
+  const { location, history, imageUrl, dispatch, gmxl: { detail } } = props;
+  const { type } = location.query;
+  const [cover, setCover] = React.useState('');
   const [form] = Form.useForm();
+  const upLoadProps = {
 
-  console.log(form)
-  console.log(form.getFieldsValue())
-
-  const props = {
-    name: 'file',
+    listType: 'picture-card',
+    name: 'avatar',
     multiple: false,
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    action: `${config.API}/upload`,
+    headers: {
+      'authorization': localStorage.getItem('authorization'),
+    },
+    accept: '.png,.jpg',
     onChange(info: { file: { name?: any; status?: any; }; fileList: any; }) {
       const { status } = info.file;
       if (status !== 'uploading') {
         console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully.`);
+        console.log(info);
+        setCover(`${info.file.response.url}`);
+        // message.success(`${info.file.name} file uploaded successfully.`);
+        message.success(`${info.file.name} 上传成功.`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
+        // message.error(`${info.file.name} file upload failed.`);
+        message.error(`${info.file.name} 上传失败.`);
       }
     },
   };
 
+  if (!_.isEmpty(detail) && _.isEmpty(form.getFieldsValue().title)){
+    const {cover} = detail;
+    form.setFieldsValue(detail);
+    setCover(cover);
+
+  }
+
   return (
-    <Form className={styles.wrap} form={form}>
+    <Form
+      className={styles.wrap}
+      form={form}
+      initialValues={type === 'update' ? detail : { status: 1 }}
+    >
       <div className={styles.editorWrap}>
-        详细内容
-        <Button onClick={() => {
-          form.validateFields()
-            .then(values => {
-              /*
-            values:
-              {
-                username: 'username',
-                password: 'password',
-              }
-            */
-            })
-            .catch(errorInfo => {
-              console.log(errorInfo)
-              /*
-              errorInfo:
-                {
-                  values: {
-                    username: 'username',
-                    password: 'password',
+        基本信息
+        <div>
+          <Button type='dashed' style={{ marginRight: 10 }} onClick={() => {
+            history.push(location.pathname);
+          }}>
+            取消
+          </Button>
+          <Button type='primary' onClick={() => {
+            form.validateFields()
+              .then(values => {
+                console.log(values);
+                // const { coverUpload, ...restProps } = values;
+                let id = type === 'update' ? {id: detail.id} : {};
+                dispatch({
+                  type: `gmxl/${type}`,
+                  payload: {
+                    cover,
+                    ...values,
+                    ...id,
                   },
-                  errorFields: [
-                    { password: ['username'], errors: ['Please input your Password!'] },
-                  ],
-                  outOfDate: false,
-                }
-              */
-            });
-          // console.log(form.getFieldsValue())
-        }}>提交</Button>
+                });
+              })
+              .catch(errorInfo => {
+                console.log(errorInfo);
+              });
+          }}>提交</Button>
+        </div>
+
       </div>
       <Row>
         <Col span={10} className={styles.upload}>
           <Form.Item
-            name="cover"
-            rules={[{ required: true, message: '请上传图片!' }]}
-            hasFeedback
+            // name="coverUpload"
+            // rules={[{ required: true, message: '请上传图片!' }]}
           >
-            <Dragger {...props}>
-              <p className="ant-upload-drag-icon">
-                <InboxOutlined/>
-              </p>
-              <p className="ant-upload-text">点击或者拖动文件到此处上传</p>
-            </Dragger>
+            <Upload {...upLoadProps}>
+              {!_.isEmpty(cover) ? <img src={`${config.API}${cover}`} alt="avatar" style={{ width: '100%' }}/> : <div>
+                {/*{false ? <LoadingOutlined /> : <PlusOutlined />}*/}
+                <div className="ant-upload-text">Upload</div>
+              </div>}
+              {/*<p className="ant-upload-drag-icon">*/}
+              {/*  <InboxOutlined/>*/}
+              {/*</p>*/}
+              {/*<p className="ant-upload-text">点击或者拖动文件到此处上传</p>*/}
+            </Upload>
           </Form.Item>
           <div className={styles.desc}>点击上方图标, 选择文件并上传新的图片</div>
         </Col>
         <Col push={4} span={10}>
           <Form.Item
-            label="姓名"
+            label="烈士姓名"
             name="title"
             hasFeedback
             rules={[{ required: true, message: '姓名不能为空!' }]}
@@ -95,10 +112,10 @@ export default () => {
           </Form.Item>
 
           <Form.Item
-            label="显示"
+            label="显示状态"
             name="status"
             hasFeedback
-            rules={[{ required: true,}]}
+            rules={[{ required: true }]}
           >
             <Radio.Group>
               <Radio value={0}>隐藏</Radio>
@@ -121,8 +138,8 @@ export default () => {
       </div>
 
       <Form.Item
-        name="html"
-        rules={[{ required: false}]}
+        name="content"
+        rules={[{ required: false }]}
       >
         <Editor/>
       </Form.Item>

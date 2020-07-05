@@ -45,6 +45,7 @@ export default class BasicLayout extends React.Component {
 
     // @ts-ignore
     const { children, location, dispatch } = this.props;
+    const {type} = location.query;
 
     if (location.pathname === '/login') {
       return children;
@@ -91,15 +92,15 @@ export default class BasicLayout extends React.Component {
             </Menu>
           </Header>
 
-          <div className={styles.breadcrumb}>
+          {type && <div className={styles.breadcrumb}>
             <Link to={location.pathname}>{getMenuData().find(val => val.route === location.pathname).label}</Link>
             <span className={styles.breadSplit}>/</span>
-            <span>编辑</span>
-          </div>
+            <span>{type === 'create' ? '新建' : '编辑'}</span>
+          </div>}
           <Content
             className={styles['site-layout-background']}
             style={{
-              margin: '24px 16px',
+              // margin: '24px 16px',
               padding: 24,
               minHeight: 280,
             }}

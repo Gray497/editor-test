@@ -12,7 +12,7 @@ export default class SiderDemo extends React.Component {
   render() {
     // console.log(this.props)
     return (
-      <Basic/>
+      <Basic {...this.props}/>
     )
   }
 }
