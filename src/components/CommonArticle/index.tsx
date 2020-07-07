@@ -18,7 +18,7 @@ const { confirm } = Modal;
 @connect((dispatch) => ({
   dispatch,
 }))
-export default class SiderDemo extends React.Component {
+export default class Index extends React.Component {
   render() {
     const { location:{ query}, _model:{dataSource, pagination}, history, dispatch, PATH } = this.props;
     const { id, type } = query;
