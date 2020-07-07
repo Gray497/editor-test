@@ -27,11 +27,9 @@ export interface ModelType {
   };
 }
 
-const PATH = 'gmxl';
-
 // @ts-ignore
 const Model: ModelType = {
-  namespace: PATH,
+  namespace: 'article',
 
   state: {
     dataSource: [],
@@ -41,55 +39,12 @@ const Model: ModelType = {
       total: 0,
     },
     detail:{},
-    // status: undefined,
   },
 
   subscriptions: {
-// @ts-ignore
-    setup({ dispatch, history }) {
-      history.listen((location: any) => {
-        // console.log(location);
-        const {id, type} = location.query;
-        if (location.pathname === `/${PATH}`){
-          if (!!type && !!id){
-            dispatch({ type: 'detail', payload:{id} })
-          } else {
-            dispatch({ type: 'query', payload: location.query })
-            dispatch({
-              type: 'setState',
-              payload: {
-                detail: {  }
-              }
-            })
-          }
-        }
-      });
-    },
   },
 
   effects: {
-    * query({ payload}, { call, put, select }) {
-      const {pageNum = 1, pageSize = 10, status: _status} = payload;
-      const { status, data, total } = yield call(query, {
-        type: articleType,
-        pageNum,
-        pageSize,
-        status: _status
-      });
-      if (status === 200) {
-        yield put({
-          type: 'setState',
-          payload:{
-            dataSource: data.data,
-            pagination:{
-              current: pageNum,
-              showTotal: (total: any) => `共 ${total} 条记录`,
-              total: data.total,
-            }
-          }
-        })
-      }
-    },
     * remove({ payload}, { call, put }) {
       const { status, data } = yield call(remove, payload);
       if (status === 200){
@@ -111,13 +66,37 @@ const Model: ModelType = {
         })
       }
     },
+    * query({ payload}, { call, put }) {
+      const {pageNum = 1, pageSize = 10, status: _status} = payload;
+      const { status, data, total } = yield call(query, {
+        type: articleType,
+        pageNum,
+        pageSize,
+        status: _status
+      });
+      if (status === 200) {
+        console.log(data)
+        yield put({
+          type: 'setState',
+          payload:{
+            dataSource: data.data,
+            pagination:{
+              current: pageNum,
+              showTotal: (total: any) => `共 ${total} 条记录`,
+              total: data.total,
+            }
+          }
+        })
+        // yield put(routerRedux.push('/gmxl'));
+      }
+    },
     * create({ payload }, { call, put }) {
       const { status, data } = yield call(create, {
         ...payload,
         type: articleType,
       });
       if (status === 200) {
-        yield put(routerRedux.push(window.location.pathname));
+        yield put(routerRedux.push('/gmxl'));
       }
     },
     * update({ payload }, { call, put }) {
@@ -126,13 +105,14 @@ const Model: ModelType = {
         type: articleType,
       });
       if (status === 200) {
-        yield put(routerRedux.push(window.location.pathname));
+        yield put(routerRedux.push('/gmxl'));
       }
     },
   },
 
   reducers: {
     setState(state, action) {
+      console.log('========')
       return { ...state, ...action.payload }
     },
   },

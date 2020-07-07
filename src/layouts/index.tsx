@@ -19,10 +19,10 @@ const { SubMenu } = Menu;
 const getMenuData = () => [
   { icon: <UserOutlined/>, label: '首页', route: '/' },
   { icon: <UserOutlined/>, label: '革命先烈-管理', route: '/gmxl' },
-  { icon: <UserOutlined/>, label: '立功受奖-管理', route: '/1' },
-  { icon: <UploadOutlined/>, label: '创业先锋-管理', route: '/index2' },
-  { icon: <UserOutlined/>, label: '政策文件-管理', route: '/d' },
-  { icon: <VideoCameraOutlined/>, label: '办事流程-管理', route: '/index' },
+  { icon: <UserOutlined/>, label: '立功受奖-管理', route: '/lgsj' },
+  { icon: <UploadOutlined/>, label: '创业先锋-管理', route: '/cyxf' },
+  { icon: <UserOutlined/>, label: '政策文件-管理', route: '/zcwj' },
+  { icon: <VideoCameraOutlined/>, label: '办事流程-管理', route: '/bslc' },
 ];
 
 const { Header, Sider, Content } = Layout;
@@ -93,7 +93,12 @@ export default class BasicLayout extends React.Component {
           </Header>
 
           {type && <div className={styles.breadcrumb}>
-            <Link to={location.pathname}>{getMenuData().find(val => val.route === location.pathname).label}</Link>
+            <Link to={location.pathname}>
+              {
+                // @ts-ignore
+                getMenuData().find(val => val.route === location.pathname).label
+              }
+            </Link>
             <span className={styles.breadSplit}>/</span>
             <span>{type === 'create' ? '新建' : '编辑'}</span>
           </div>}

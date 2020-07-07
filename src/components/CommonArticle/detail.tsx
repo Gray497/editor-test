@@ -1,19 +1,19 @@
 import { Divider, Row, Col, Upload, message, Form, Input, Radio, Button } from 'antd';
 import React from 'react';
 import _ from 'lodash';
-import styles from './style.less';
+import styles from './index.less';
 import Editor from '@/components/Editor';
 import config from '@/utils/config';
 const FormItem = Form.Item;
 
 export default (props) => {
 
-  const { location, history, imageUrl, dispatch, gmxl: { detail } } = props;
+  const { location, history, imageUrl, dispatch, _model: { detail }, PATH } = props;
   const { type } = location.query;
   const [cover, setCover] = React.useState('');
   const [form] = Form.useForm();
-  const upLoadProps = {
 
+  const upLoadProps = {
     listType: 'picture-card',
     name: 'avatar',
     multiple: false,
@@ -21,19 +21,16 @@ export default (props) => {
     headers: {
       'authorization': localStorage.getItem('authorization'),
     },
-    accept: '.png,.jpg',
+    accept: 'image/*',
     onChange(info: { file: { name?: any; status?: any; }; fileList: any; }) {
       const { status } = info.file;
       if (status !== 'uploading') {
         console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        console.log(info);
         setCover(`${info.file.response.url}`);
-        // message.success(`${info.file.name} file uploaded successfully.`);
         message.success(`${info.file.name} 上传成功.`);
       } else if (status === 'error') {
-        // message.error(`${info.file.name} file upload failed.`);
         message.error(`${info.file.name} 上传失败.`);
       }
     },
@@ -43,7 +40,6 @@ export default (props) => {
     const {cover} = detail;
     form.setFieldsValue(detail);
     setCover(cover);
-
   }
 
   return (
@@ -67,7 +63,7 @@ export default (props) => {
                 // const { coverUpload, ...restProps } = values;
                 let id = type === 'update' ? {id: detail.id} : {};
                 dispatch({
-                  type: `gmxl/${type}`,
+                  type: `${PATH}/${type}`,
                   payload: {
                     cover,
                     ...values,
@@ -85,18 +81,11 @@ export default (props) => {
       <Row>
         <Col span={10} className={styles.upload}>
           <Form.Item
-            // name="coverUpload"
-            // rules={[{ required: true, message: '请上传图片!' }]}
           >
             <Upload {...upLoadProps}>
               {!_.isEmpty(cover) ? <img src={`${config.API}${cover}`} alt="avatar" style={{ width: '100%' }}/> : <div>
-                {/*{false ? <LoadingOutlined /> : <PlusOutlined />}*/}
                 <div className="ant-upload-text">Upload</div>
               </div>}
-              {/*<p className="ant-upload-drag-icon">*/}
-              {/*  <InboxOutlined/>*/}
-              {/*</p>*/}
-              {/*<p className="ant-upload-text">点击或者拖动文件到此处上传</p>*/}
             </Upload>
           </Form.Item>
           <div className={styles.desc}>点击上方图标, 选择文件并上传新的图片</div>

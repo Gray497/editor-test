@@ -3,7 +3,7 @@ import {routerRedux} from 'dva/router'
 import { create, query, detail, update, remove } from '@/services/article';
 import {getLocationQuery} from '@/utils/help';
 
-const articleType = 1;
+const articleType = 3;
 
 export interface StateType {
   dataSource: Array<any>,
@@ -27,7 +27,7 @@ export interface ModelType {
   };
 }
 
-const PATH = 'gmxl';
+const PATH = 'cyxf';
 
 // @ts-ignore
 const Model: ModelType = {
