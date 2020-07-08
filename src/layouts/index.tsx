@@ -51,6 +51,10 @@ export default class BasicLayout extends React.Component {
       return children;
     }
 
+    if (location.pathname.startsWith('/www')) {
+      return children;
+    }
+
     return <div>
       <Layout className={styles.container}>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>

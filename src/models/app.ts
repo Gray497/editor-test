@@ -1,7 +1,6 @@
 // import { stringify } from 'querystring';
-import { Effect } from 'umi';
+import { Effect, history } from 'umi';
 import { logout } from '@/services/login';
-const {routerRedux} = require("dva").router
 
 // import { pathToRegexp } from 'path-to-regexp';
 
@@ -39,10 +38,10 @@ const Model: AppModelType = {
 
   effects: {
     * logout({ payload }, { call, put }) {
-      const { status, data } = yield call(logout, payload);
+      const { status } = yield call(logout, payload);
       if (status === 200) {
         localStorage.setItem('authorization', '/');
-        yield put(routerRedux.push('/login'));
+        history.push('/login');
       }
     },
   },

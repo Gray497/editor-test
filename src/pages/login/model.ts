@@ -1,6 +1,6 @@
 // import { stringify } from 'querystring';
 import { Effect } from 'umi';
-import {routerRedux} from 'dva/router'
+import { history } from 'umi';
 import { login, getHi } from '@/services/login';
 
 // import { pathToRegexp } from 'path-to-regexp';
@@ -48,7 +48,7 @@ const Model: LoginModelType = {
       const { status, data } = yield call(login, payload);
       if (status === 200) {
         localStorage.setItem('authorization', data.token);
-        yield put(routerRedux.push('/'));
+        yield put(history.push('/'));
       }
     },
     * getHi({ payload }, { call, put }) {

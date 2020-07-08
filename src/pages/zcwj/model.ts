@@ -1,5 +1,5 @@
 import { Effect, Reducer } from 'umi';
-import {routerRedux} from 'dva/router'
+import { history } from 'umi';
 import { create, query, detail, update, remove } from '@/services/article';
 import {getLocationQuery} from '@/utils/help';
 
@@ -117,7 +117,7 @@ const Model: ModelType = {
         type: articleType,
       });
       if (status === 200) {
-        yield put(routerRedux.push(window.location.pathname));
+        history.push(window.location.pathname)
       }
     },
     * update({ payload }, { call, put }) {
@@ -126,7 +126,7 @@ const Model: ModelType = {
         type: articleType,
       });
       if (status === 200) {
-        yield put(routerRedux.push(window.location.pathname));
+        history.push(window.location.pathname)
       }
     },
   },

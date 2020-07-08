@@ -1,5 +1,5 @@
 import { Effect, Reducer } from 'umi';
-import {routerRedux} from 'dva/router'
+import { history } from 'umi';
 import { create, query, detail, update, remove } from '@/services/article';
 import {getLocationQuery} from '@/utils/help';
 
@@ -70,7 +70,7 @@ const Model: ModelType = {
   effects: {
     * query({ payload}, { call, put, select }) {
       const {pageNum = 1, pageSize = 10, status: _status} = payload;
-      const { status, data, total } = yield call(query, {
+      const { status, data } = yield call(query, {
         type: articleType,
         pageNum,
         pageSize,
@@ -91,7 +91,7 @@ const Model: ModelType = {
       }
     },
     * remove({ payload}, { call, put }) {
-      const { status, data } = yield call(remove, payload);
+      const { status } = yield call(remove, payload);
       if (status === 200){
         yield put({
           type: 'query',
@@ -101,7 +101,6 @@ const Model: ModelType = {
     },
     * detail({ payload}, { call, put }) {
       const { status, data } = yield call(detail, payload);
-      console.log(data)
       if (status === 200){
         yield put({
           type: 'setState',
@@ -112,21 +111,21 @@ const Model: ModelType = {
       }
     },
     * create({ payload }, { call, put }) {
-      const { status, data } = yield call(create, {
+      const { status } = yield call(create, {
         ...payload,
         type: articleType,
       });
       if (status === 200) {
-        yield put(routerRedux.push(window.location.pathname));
+        history.push(window.location.pathname)
       }
     },
     * update({ payload }, { call, put }) {
-      const { status, data } = yield call(update, {
+      const { status } = yield call(update, {
         ...payload,
         type: articleType,
       });
       if (status === 200) {
-        yield put(routerRedux.push(window.location.pathname));
+        history.push(window.location.pathname)
       }
     },
   },

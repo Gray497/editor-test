@@ -2,7 +2,7 @@ import axios from 'axios'
 import config from 'utils/config';
 import { message } from 'antd'
 import qs from 'qs'
-import {routerRedux} from 'dva/router'
+import { history } from 'umi';
 
 const instance = axios.create({
   baseURL: config.API,
