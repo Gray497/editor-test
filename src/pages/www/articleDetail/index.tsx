@@ -12,16 +12,12 @@ const PATH = 'www/articleDetail';
 export default class Index extends React.Component {
 
   render() {
-    const { _model:{detail}, location } = this.props;
+    const { _model: { detail }, location } = this.props;
     console.log(this.props);
     return <div className={styles.wrap}>
-      {detail.content}
-      <div dangerouslySetInnerHTML={{
-        __html: detail.content
-      }}></div>
-      {/*{[*/}
-      {/*  {route: '/gmxl'}*/}
-      {/*]}*/}
+      <div className={styles.contentWrap}>
+        <div className={styles.content} dangerouslySetInnerHTML={{ __html: detail.content, }}/>
+      </div>
     </div>;
   }
 }
