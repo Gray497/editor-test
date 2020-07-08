@@ -16,6 +16,9 @@ export default class Index extends React.Component {
     console.log(this.props);
     return <div className={styles.wrap}>
       {detail.content}
+      <div dangerouslySetInnerHTML={{
+        __html: detail.content
+      }}></div>
       {/*{[*/}
       {/*  {route: '/gmxl'}*/}
       {/*]}*/}
