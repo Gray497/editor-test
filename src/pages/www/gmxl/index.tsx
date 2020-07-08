@@ -8,7 +8,7 @@ import config from '@/utils/config';
 
 function renderItem (val, location){
   return <Col key={val.id} span={6}>
-    <Link to={`${location.pathname}?id=${val.id}`}>
+    <Link to={`/www/articleDetail?id=${val.id}`}>
     <div className={styles.item}>
       <img className={styles.pic} src={`${config.API}${val.cover}`} alt=""/>
       <div className={styles.title}>{val.title}</div>
