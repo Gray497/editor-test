@@ -1,5 +1,6 @@
 import React from 'react';
 import {history} from 'umi';
+import {message} from 'antd';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import uploadManager from 'utils/upload';
@@ -49,6 +50,15 @@ export default class EditorDemo extends React.Component {
 
     console.log(fileObj);
 
+    if (fileObj.size > (300 * 1024 * 1024)){
+      message.error('文件大小不能超过300mb')
+      e.error({
+        err: {
+          msg: '文件大小不能超过300mb'
+        }
+      })
+      return;
+    }
     uploadManager.upload(e.target, [fileObj], {
 
     }, fileList => {
