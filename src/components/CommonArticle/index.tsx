@@ -69,13 +69,13 @@ export default class Index extends React.Component {
     );
 
     const columns = [
-      // {
-      //   title: 'Sort',
-      //   dataIndex: 'sort',
-      //   width: 30,
-      //   className: 'drag-visible',
-      //   render: () => <DragHandle/>,
-      // },
+      {
+        title: 'Sort',
+        dataIndex: 'sort',
+        width: 30,
+        className: 'drag-visible',
+        render: () => <DragHandle/>,
+      },
       {
         title: 'ID',
         dataIndex: 'id',
