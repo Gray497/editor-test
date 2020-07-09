@@ -4,6 +4,7 @@ import _ from 'lodash';
 import styles from './index.less';
 import Editor from '@/components/Editor';
 import config from '@/utils/config';
+import { history } from 'umi';
 const FormItem = Form.Item;
 
 export default (props) => {
@@ -26,6 +27,10 @@ export default (props) => {
       const { status } = info.file;
       if (status !== 'uploading') {
         console.log(info.file, info.fileList);
+        if (info.file.error && info.file.error.status === 401){
+          history.push('/login');
+          return
+        }
       }
       if (status === 'done') {
         setCover(`${info.file.response.url}`);

@@ -54,6 +54,7 @@ export default class Index extends React.Component {
         key: 'op',
         render(value: string, record: object) {
           return <Space size="middle">
+            <a href={`./www/articleDetail?id=${record.id}`} target='_blank'>预览</a>
             <Link to={`./${PATH}?id=${record.id}&type=update`}>编辑</Link>
             <a style={{color: 'red'}} onClick={() => {
               confirm({

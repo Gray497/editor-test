@@ -24,10 +24,10 @@ instance.interceptors.response.use(
   },
   error => {
     console.log(error.response)
-    if (error.response.status === 401){
-      window.location = '/login';
-      // routerRedux.push('/login');
-    }
+    // if (error.response.status === 401){
+    //   window.location = '/login';
+    //   // routerRedux.push('/login');
+    // }
     message.error(error.response.data.errorMsg)
     // console.log(error.response)
     // console.log(error.response.data.errorMsg)

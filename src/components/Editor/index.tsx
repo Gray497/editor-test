@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from 'antd';
+import {history} from 'umi';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import uploadManager from 'utils/upload';
@@ -47,14 +47,21 @@ export default class EditorDemo extends React.Component {
       type = 'VIDEO';
     }
 
+    console.log(fileObj);
+
     uploadManager.upload(e.target, [fileObj], {
 
     }, fileList => {
       console.log('上传回调', fileList)
       let _file = fileList[0];
+      console.log(_file)
+      console.log(_file.xhr)
+      if (_file.xhr && _file.xhr.status === 401){
+        history.push('/login');
+        return
+      }
       let progress = _file.progress;
       if (progress >= 100 && !!_file.response){
-        console.log(_file)
         console.log(_file.response)
         e.success({
           url: config.API + _file.response.url
