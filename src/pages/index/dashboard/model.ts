@@ -1,9 +1,5 @@
 import { Effect, Reducer } from 'umi';
-import { history } from 'umi';
-import { getStatus } from '@/services/index';
-import {getLocationQuery} from '@/utils/help';
-
-const articleType = 1;
+import { getStatus } from '@/services';
 
 export interface StateType {
   status: object,
@@ -21,7 +17,7 @@ export interface ModelType {
   };
 }
 
-const PATH = 'index';
+const PATH = 'index/dashboard';
 
 // @ts-ignore
 const Model: ModelType = {
@@ -37,16 +33,15 @@ const Model: ModelType = {
     setup({ dispatch, history }) {
       history.listen((location: any) => {
         // console.log(location);
-        const {id, type} = location.query;
         if (location.pathname === `/${PATH}`){
-          dispatch({ type: 'getStatus', payload:{id} })
+          dispatch({ type: 'getStatus'})
         }
       });
     },
   },
 
   effects: {
-    * getStatus({ payload}, { call, put }) {
+    * getStatus({ payload }, { call, put }) {
       const { status, data } = yield call(getStatus, payload);
       console.log(data)
       if (status === 200){

@@ -18,7 +18,7 @@ import moment from 'moment';
 const { SubMenu } = Menu;
 
 const getMenuData = () => [
-  { icon: <UserOutlined/>, label: '首页', route: '/index' },
+  { icon: <UserOutlined/>, label: '首页', route: '/index/dashboard' },
   { icon: <UserOutlined/>, label: '革命先烈-管理', route: '/gmxl' },
   { icon: <UserOutlined/>, label: '立功受奖-管理', route: '/lgsj' },
   { icon: <UploadOutlined/>, label: '创业先锋-管理', route: '/cyxf' },
