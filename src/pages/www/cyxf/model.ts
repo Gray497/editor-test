@@ -66,6 +66,7 @@ const Model: ModelType = {
             pagination:{
               current: pageNum,
               showTotal: (total: any) => `共 ${total} 条记录`,
+              pageSize,
               total: data.total,
             }
           }

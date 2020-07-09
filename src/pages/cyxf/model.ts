@@ -69,7 +69,7 @@ const Model: ModelType = {
 
   effects: {
     * query({ payload}, { call, put, select }) {
-      const {pageNum = 1, pageSize = 10, status: _status} = payload;
+      const {pageNum = 1, pageSize = 20, status: _status} = payload;
       const { status, data } = yield call(query, {
         type: articleType,
         pageNum,
@@ -84,6 +84,7 @@ const Model: ModelType = {
             pagination:{
               current: pageNum,
               showTotal: (total: any) => `共 ${total} 条记录`,
+              pageSize,
               total: data.total,
             }
           }

@@ -31,7 +31,7 @@ export default (props) => {
   };
 
 
-  let { loading, dataSource, pagination, columns, rowSelection, rowKey, wrapClassName, rowClassName, expandedRowRender } = props;
+  let { loading, dataSource, pagination, columns, rowSelection, rowKey, wrapClassName, rowClassName, expandedRowRender, components } = props;
 
   // 暂时不需要用到
   let _columns = [];
@@ -85,6 +85,7 @@ export default (props) => {
       expandedRowRender={expandedRowRender}
       loading={loading}
       rowKey={rowKey ? rowKey : (item, index) => index}
+      components={components}
     />
   );
 }

@@ -38,6 +38,6 @@ export const resetPagination = (query) => {
   return {
     ...query,
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 20,
   };
 };

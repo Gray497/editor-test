@@ -60,7 +60,7 @@ export default class Index extends React.Component {
         <Statistic title="系统运行时间" value={formatSeconds(uptime)}/>
       </Col>
       <Col span={12}>
-        <Statistic title="内存使用率" value={freemem && totalmem ? ((totalmem - freemem) / totalmem).toFixed(2) : 0}
+        <Statistic title="内存使用率" value={freemem && totalmem ? ((totalmem - freemem) / totalmem * 100).toFixed(2) : 0}
                    suffix="/ 100"/>
       </Col>
     </Row>;

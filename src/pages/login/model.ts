@@ -48,7 +48,7 @@ const Model: LoginModelType = {
       const { status, data } = yield call(login, payload);
       if (status === 200) {
         localStorage.setItem('authorization', data.token);
-        yield put(history.push('/'));
+        history.push('/index/dashboard');
       }
     },
     * getHi({ payload }, { call, put }) {
