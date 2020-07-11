@@ -3,6 +3,7 @@ import React from 'react';
 import _ from 'lodash';
 import styles from './index.less';
 import Editor from '@/components/Editor';
+// import Editor from '@/components/MediaExample/index';
 import config from '@/utils/config';
 import { history } from 'umi';
 const FormItem = Form.Item;

@@ -103,3 +103,96 @@ export default class EditorDemo extends React.Component {
   }
 
 }
+
+
+/*
+*
+function loadScriptString(code) {
+            var script = document.createElement("script");  //创建一个script标签
+            script.type = "text/javascript";
+            try {
+                //IE浏览器认为script是特殊元素,不能再访问子节点;报错;
+                script.appendChild(document.createTextNode(code));
+            }
+            catch (ex) {
+                script.text = code;
+            }
+            document.getElementsByTagName('head')[0].appendChild(script);
+        }
+        window.onload = function () {
+            var obt = document.getElementById("bt");//获得ID
+            var str = "var odiv=document.getElementById('show');"
+            str = str + "odiv.innerHTML='蚂蚁部落欢迎您'"
+            obt.onclick = function () {
+                loadScriptString(str);
+            }
+        }
+*
+*
+*
+*
+* */
+
+// import React from 'react';
+// import {history} from 'umi';
+// import {message} from 'antd';
+// import BraftEditor from 'braft-editor';
+// import 'braft-editor/dist/index.css';
+// import uploadManager from 'utils/upload';
+// import config from 'utils/config';
+// import _ from 'lodash';
+//
+// function createScript(url, callback) {
+//   const oScript = document.createElement('script');
+//   oScript.type = 'text/javascript';
+//   oScript.async = true;
+//   oScript.src = url;
+//
+//   /**
+//    * IE6/7/8                -- onreadystatechange
+//    * IE9/10                 -- onreadystatechange, onload
+//    * Firefox/Chrome/Opera   -- onload
+//    */
+//
+//   const isIE = !-[1,];
+//   if (isIE) {
+//     // 判断IE8及以下浏览器
+//     oScript.onreadystatechange = function () {
+//       if (this.readyState == 'loaded' || this.readyState == 'complete') {
+//         callback();
+//       }
+//     }
+//   } else {
+//     // IE9及以上浏览器，Firefox，Chrome，Opera
+//     oScript.onload = function () {
+//       callback();
+//     }
+//   }
+//
+//   document.body.appendChild(oScript);
+// }
+//
+// export default class EditorDemo extends React.Component {
+//
+//   state = {
+//     ue: undefined,
+//   }
+//
+//   componentDidMount() {
+//     createScript(`${config.API}/public/ueditor/ueditor.config.js`, () => {
+//       createScript(`${config.API}/public/ueditor/ueditor.all.min.js`, () => {
+//         console.log(123)
+//         let ue = UE.getEditor('ueditor');
+//         this.setState({
+//           ue,
+//         })
+//       })
+//     })
+//   }
+//
+//   render() {
+//     return <div id='ueditor'>
+//
+//     </div>;
+//   }
+// }
