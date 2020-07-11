@@ -26,6 +26,13 @@ export function remove (params) {
   return deleteForm(`/articles/${id}`)
 }
 
+export function setTop (params) {
+  const {id} = params;
+  return put(`/articles/${id}/setTop`, params)
+}
+
+//top
+
 //remove
 
 //detail

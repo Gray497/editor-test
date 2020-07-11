@@ -1,8 +1,9 @@
 import React from 'react';
-import { Table, Space, Button, Select, Modal } from 'antd';
+import { Table, Space, Button, Select, Modal, Tooltip } from 'antd';
 import styles from './index.less';
 import Detail from './detail';
 import { connect, Link } from 'umi';
+import classnames from 'classnames';
 // @ts-ignore
 import CommonTable from '@/components/CommonTable';
 import { getGoToFilterURL } from '@/utils/help';
@@ -11,6 +12,8 @@ import { sortableContainer, sortableElement, sortableHandle } from 'react-sortab
 import { MenuOutlined } from '@ant-design/icons';
 import arrayMove from 'array-move';
 import _ from 'lodash';
+import config from '@/utils/config';
+import moment from 'moment';
 
 const { Option } = Select;
 const { confirm } = Modal;
@@ -21,9 +24,10 @@ const DragHandle = sortableHandle(() => (
 
 const SortableItem = sortableElement(props => <tr {...props} />);
 const SortableContainer = sortableContainer(props => <tbody {...props} />);
-const DragableBodyRow = ({ index, className, style, ...restProps }) => (
-  <SortableItem index={restProps['data-row-key']} {...restProps} />
-);
+const DragableBodyRow = ({ index, className, style, ...restProps }) => {
+  // console.log(restProps, restProps['data-row-key'] || 'gray497')
+  return <SortableItem index={restProps['data-row-key'] || 999999} {...restProps} />;
+};
 
 // @ts-ignore
 @connect((dispatch) => ({
@@ -36,7 +40,7 @@ export default class Index extends React.Component {
   };
 
   static getDerivedStateFromProps(nextProps, preState) {
-    console.log(nextProps, preState);
+    // console.log(nextProps, preState);
     if (!_.isEqual(JSON.stringify(nextProps._model.dataSource), JSON.stringify(preState.dataSource))) {
       return {
         dataSource: nextProps._model.dataSource,
@@ -46,7 +50,9 @@ export default class Index extends React.Component {
   }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
+    // 这里的index是rowkey
     const { dataSource } = this.state;
+    console.log(oldIndex, newIndex);
     if (oldIndex !== newIndex) {
       const newData = arrayMove([].concat(dataSource), oldIndex, newIndex).filter(el => !!el);
       console.log('Sorted items: ', newData);
@@ -69,36 +75,59 @@ export default class Index extends React.Component {
     );
 
     const columns = [
-      {
-        title: 'Sort',
-        dataIndex: 'sort',
-        width: 30,
-        className: 'drag-visible',
-        render: () => <DragHandle/>,
-      },
+      // {
+      //   title: 'Sort',
+      //   dataIndex: 'sort',
+      //   width: 30,
+      //   className: 'drag-visible',
+      //   render: () => <DragHandle/>,
+      // },
       {
         title: 'ID',
         dataIndex: 'id',
         key: 'id',
-        width: 30,
+        // width: 30,
       },
       {
         title: '姓名',
         dataIndex: 'title',
         key: 'title',
-        width: 100,
+        // width: 100,
       },
       {
         title: '图片',
         dataIndex: 'cover',
         key: 'cover',
-        width: '20%',
+        render(value){
+          return <Tooltip title={<img style={{height: 200}} src={`${config.API}${value}`} alt=""/>}>
+            <img style={{height: 50}} src={`${config.API}${value}`} alt=""/>
+          </Tooltip>
+        }
+        // width: '20%',
       },
       {
         title: '状态',
         dataIndex: 'status',
         key: 'status',
-        width: 60,
+        // width: 60,
+        render(value){
+
+          let text, status, color;
+          if (value === 1) {
+            text = '显示';
+            color = '#3ecdc8';
+          } else {
+            text = '隐藏';
+            color = '#e7658a';
+          }
+
+          return (
+            <div className={styles.status}>
+              <div className={classnames(styles.dot, status ? styles.success : styles.error)} style={{backgroundColor: color}}></div>
+              <div>{text}</div>
+            </div>
+          );
+        }
       },
       {
         title: '大致介绍',
@@ -107,11 +136,29 @@ export default class Index extends React.Component {
         width: 100,
       },
       {
+        title: '创建时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+        render(value){
+          return moment(value).format('YYYY-MM-DD HH:mm:ss')
+        }
+      },
+      {
         title: '操作',
         key: 'op',
         render(value: string, record: object) {
           return <Space size="middle">
             <a href={`./www/articleDetail?id=${record.id}`} target='_blank'>预览</a>
+            <a onClick={() => {
+              // console.log()
+              dispatch({
+                type: `${PATH}/setTop`,
+                payload: {
+                  id: record.id,
+                  top: record.top === 1 ? 0 : 1
+                },
+              });
+            }}>{record.top === 1 ? '取消置顶' : '置顶'}</a>
             <Link to={`./${PATH}?id=${record.id}&type=update`}>编辑</Link>
             <a style={{ color: 'red' }} onClick={() => {
               confirm({
@@ -140,8 +187,12 @@ export default class Index extends React.Component {
     const tableProps = {
       dataSource: dataSource,
       columns: columns,
-      pagination,
-      rowKey: (record: object) => JSON.stringify(record),
+      pagination: {
+        ...pagination,
+        showSizeChanger: true
+      },
+      //
+      rowKey: (record: { id: any; }) => record.id,
       components: {
         body: {
           wrapper: DraggableContainer,

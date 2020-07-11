@@ -67,7 +67,7 @@
 //       }
 //     },
 //     * query({ payload}, { call, put }) {
-//       const {pageNum = 1, pageSize = 20, status: _status} = payload;
+//       const {pageNum = 1, pageSize = 10, status: _status} = payload;
 //       const { status, data, total } = yield call(query, {
 //         type: articleType,
 //         pageNum,

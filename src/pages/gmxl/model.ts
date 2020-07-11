@@ -1,6 +1,6 @@
 import { Effect, Reducer } from 'umi';
 import { history } from 'umi';
-import { create, query, detail, update, remove } from '@/services/article';
+import { create, query, detail, update, remove, setTop } from '@/services/article';
 import {getLocationQuery} from '@/utils/help';
 
 const articleType = 1;
@@ -21,6 +21,7 @@ export interface ModelType {
     detail: Effect,
     update: Effect,
     remove: Effect,
+    top: Effect,
   };
   reducers: {
     setState: Reducer,
@@ -69,7 +70,7 @@ const Model: ModelType = {
 
   effects: {
     * query({ payload}, { call, put, select }) {
-      const {pageNum = 1, pageSize = 20, status: _status} = payload;
+      const {pageNum = 1, pageSize = 10, status: _status} = payload;
       const { status, data } = yield call(query, {
         type: articleType,
         pageNum,
@@ -128,6 +129,15 @@ const Model: ModelType = {
       });
       if (status === 200) {
         history.push(window.location.pathname)
+      }
+    },
+    * setTop({ payload }, { call, put }) {
+      const { status } = yield call(setTop, {
+        ...payload,
+        type: articleType,
+      });
+      if (status === 200) {
+        history.push(window.location.pathname + window.location.search)
       }
     },
   },

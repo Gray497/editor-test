@@ -76,10 +76,7 @@ export default (props) => {
       columns={_columns}
       rowClassName={rowClassName}
       rowSelection={rowSelection ? rowSelection : null}
-      pagination={{
-        ...pagination,
-        showSizeChanger: true
-      }}
+      pagination={pagination}
       onChange={onPageChange}
       dataSource={dataSource}
       expandedRowRender={expandedRowRender}
