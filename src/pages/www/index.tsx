@@ -4,7 +4,7 @@ import styles from './index.less'
 import { connect, Link } from 'umi';
 
 function renderItem (val){
-  return <Link to={`/www${val.route}`}><div className={styles.item}>{val.label}</div></Link>
+  return <Link to={`/www${val.route}`} key={val.route}><div className={styles.item}>{val.label}</div></Link>
 }
 
 export default (props) => {

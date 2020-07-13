@@ -1,5 +1,6 @@
 import { Effect, Reducer } from 'umi';
 import { query } from '@/services/article';
+import _ from 'lodash';
 
 const articleType = 2;
 
@@ -58,6 +59,9 @@ const Model: ModelType = {
         pageSize,
         status: _status
       });
+      let _data = _.groupBy(data.data,'groupName');
+      console.log(_data)
+      console.log(data.data)
       if (status === 200) {
         yield put({
           type: 'setState',

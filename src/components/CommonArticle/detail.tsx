@@ -52,7 +52,7 @@ export default (props) => {
     <Form
       className={styles.wrap}
       form={form}
-      initialValues={type === 'update' ? detail : { status: 1 }}
+      initialValues={type === 'update' ? detail : { status: 1, groupName: 0 }}
     >
       <div className={styles.editorWrap}>
         基本信息
@@ -105,7 +105,14 @@ export default (props) => {
           >
             <Input/>
           </Form.Item>
-
+          <Form.Item
+            label="分组名称"
+            name="groupName"
+            hasFeedback
+            rules={[{ required: true, message: '分组名称不能为空!' }]}
+          >
+            <Input />
+          </Form.Item>
           <Form.Item
             label="显示状态"
             name="status"

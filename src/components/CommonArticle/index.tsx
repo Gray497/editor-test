@@ -106,6 +106,11 @@ export default class Index extends React.Component {
         // width: '20%',
       },
       {
+        title: '分组名称',
+        dataIndex: 'groupName',
+        key: 'groupName',
+      },
+      {
         title: '状态',
         dataIndex: 'status',
         key: 'status',
