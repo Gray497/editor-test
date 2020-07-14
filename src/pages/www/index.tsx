@@ -22,8 +22,8 @@ export default (props) => {
         {[
           { label: `创业先锋`, route: `/cyxf?wwwType=3`, className: styles.itemBottom },
           { label: `政策文件`, route: `/zcwj?wwwType=4`, className: styles.itemBottom },
-          { label: `参军入伍`, route: `/cjrw?wwwType=5`, className: styles.itemBottom },
-          { label: `办事流程`, route: `/bslc?wwwType=6`, className: styles.itemBottom },
+          { label: `办事流程`, route: `/bslc?wwwType=5`, className: styles.itemBottom },
+          { label: `参军入伍`, route: `/cjrw?wwwType=6`, className: styles.itemBottom },
         ].map(renderItem)}
       </div>
     </div>

@@ -24,6 +24,7 @@ const getMenuData = () => [
   { icon: <UploadOutlined/>, label: '创业先锋', route: '/cyxf', type: 3, },
   { icon: <UserOutlined/>, label: '政策文件', route: '/zcwj', type: 4, },
   { icon: <VideoCameraOutlined/>, label: '办事流程', route: '/bslc', type: 5, },
+  { icon: <VideoCameraOutlined/>, label: '参军入伍', route: '/cjrw', type: 6, },
 ];
 
 const { Header, Sider, Content } = Layout;

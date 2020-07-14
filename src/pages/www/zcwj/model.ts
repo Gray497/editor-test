@@ -1,8 +1,7 @@
 import { Effect, Reducer } from 'umi';
 import { query } from '@/services/article';
-import _ from 'lodash';
 
-const articleType = 3;
+const articleType = 4;
 
 export interface StateType {
   dataSource: Array<any>,
@@ -22,7 +21,7 @@ export interface ModelType {
   };
 }
 
-const PATH = 'www/cyxf';
+const PATH = 'www/zcwj';
 
 // @ts-ignore
 const Model: ModelType = {
@@ -52,22 +51,19 @@ const Model: ModelType = {
 
   effects: {
     * query({ payload}, { call, put }) {
-      const { pageNum = 1, pageSize = 999, status: _status } = payload;
+      const {pageNum = 1, pageSize = 999, status: _status} = payload;
       const { status, data, total } = yield call(query, {
         type: articleType,
         pageNum,
         pageSize,
         status: _status
       });
-      let _data = _.groupBy(data.data, 'groupName');
-      console.log(_data)
-      console.log(data.data)
       if (status === 200) {
         yield put({
           type: 'setState',
-          payload: {
-            dataSource: _data,
-            pagination: {
+          payload:{
+            dataSource: data.data,
+            pagination:{
               current: pageNum,
               showTotal: (total: any) => `共 ${total} 条记录`,
               pageSize,
@@ -76,7 +72,7 @@ const Model: ModelType = {
           }
         })
       }
-    }
+    },
   },
 
   reducers: {
