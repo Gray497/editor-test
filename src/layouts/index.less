@@ -1,23 +1,25 @@
 
-:global{
-  .bf-video-player{
-    video{
+:global {
+  .bf-video-player {
+    video {
       max-height: 80vh;
     }
   }
-  .ant-tooltip{
+
+  .ant-tooltip {
     max-width: 100%;
   }
-  .ant-table-tbody > tr > td{
+
+  .ant-table-tbody > tr > td {
     padding: 8px !important;
   }
 
-  .edui-default .edui-editor{
+  .edui-default .edui-editor {
     width: 100% !important;
   }
 }
 
-.container{
+.container {
   height: 100vh;
 }
 
@@ -45,37 +47,92 @@
   min-height: auto !important;
 }
 
-.header{
+.header {
   background: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.logo{
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
+.logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
 }
 
-.rightContent{
+.rightContent {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.breadcrumb{
+.breadcrumb {
   background-color: #FFFFFF;
   padding: 20px;
-  color: rgba(0,0,0,.3);
-  a{
-    color: rgba(0,0,0,.3);
+  color: rgba(0, 0, 0, .3);
+
+  a {
+    color: rgba(0, 0, 0, .3);
   }
-  a:hover{
+
+  a:hover {
     color: #1890ff;
   }
-  .breadSplit{
+
+  .breadSplit {
     margin: 0 10px;
   }
 }
 
+
+.top {
+  padding: 70px 300px 85px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  .title {
+    font-size: 52px;
+    //font-family:FZSongHei-B07;
+    font-weight: 400;
+    letter-spacing: 3px;
+    color: rgba(145, 25, 25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .back {
+    font-size:24px;
+    font-weight:400;
+    padding: 5px 28px;
+    color:rgba(145,25,25,1);
+    border:2px solid rgba(145,25,25,1);
+    border-radius:25px;
+  }
+
+  .back:hover{
+    color: #FFFFFF;
+    background-color: rgba(145,25,25,1);
+  }
+}
+
+.wwwWrap {
+  height: 100vh;
+  background-color: #FFFFFF;
+  overflow: hidden;
+
+  .wwwContent {
+    padding: 0 330px;
+    height: calc(100vh - 236px);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  :global {
+    ::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+}

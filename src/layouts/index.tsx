@@ -18,19 +18,21 @@ import moment from 'moment';
 const { SubMenu } = Menu;
 
 const getMenuData = () => [
-  { icon: <UserOutlined/>, label: '首页', route: '/index/dashboard' },
-  { icon: <UserOutlined/>, label: '革命先烈-管理', route: '/gmxl' },
-  { icon: <UserOutlined/>, label: '立功受奖-管理', route: '/lgsj' },
-  { icon: <UploadOutlined/>, label: '创业先锋-管理', route: '/cyxf' },
-  { icon: <UserOutlined/>, label: '政策文件-管理', route: '/zcwj' },
-  { icon: <VideoCameraOutlined/>, label: '办事流程-管理', route: '/bslc' },
-  { icon: <VideoCameraOutlined/>, label: '前台页面', route: '/www' },
+  { icon: <UserOutlined/>, label: '首页', route: '/index/dashboard', type: 999, },
+  { icon: <UserOutlined/>, label: '革命先烈', route: '/gmxl', type: 1, },
+  { icon: <UserOutlined/>, label: '立功受奖', route: '/lgsj', type: 2, },
+  { icon: <UploadOutlined/>, label: '创业先锋', route: '/cyxf', type: 3, },
+  { icon: <UserOutlined/>, label: '政策文件', route: '/zcwj', type: 4, },
+  { icon: <VideoCameraOutlined/>, label: '办事流程', route: '/bslc', type: 5, },
 ];
 
 const { Header, Sider, Content } = Layout;
 
 // @ts-ignore
-@connect(({ dispatch }) => ({ dispatch }))
+@connect(({'app': _model}, dispatch) => ({
+  // dispatch,
+  _model
+}))
 export default class BasicLayout extends React.Component {
 
   state = {
@@ -46,15 +48,51 @@ export default class BasicLayout extends React.Component {
   render() {
 
     // @ts-ignore
-    const { children, location, dispatch } = this.props;
-    const { type } = location.query;
+    const { children, location, dispatch, _model, history }  = this.props;
+    const { type, wwwType } = location.query;
+    // const {wwwType} = _model;
+
+    if (location.pathname === '/'){
+      history.push('/index/dashboard');
+    }
 
     if (location.pathname === '/login') {
       return children;
     }
 
     if (location.pathname.startsWith('/www')) {
-      return children;
+      return <div className={styles.wwwWrap}>
+        <div className={styles.top}>
+          {/*<img src="" alt=""/>*/}
+          <div style={{ width: 126, height: 76, marginRight: 20, background: '#aaaaaa' }}></div>
+          <div className={styles.title}>
+            <div>
+              { (getMenuData().find(val => {
+                return val.type.toString() === wwwType
+              }) || {}).label || '清远市清新区退役军人事务局'}
+            </div>
+            { location.pathname === '/www/articleDetail' ? <div className={styles.back} onClick={() => {
+                history.push(`/www${(getMenuData().find(val => {
+                  return val.type.toString() === wwwType
+                }) || {}).route}`)
+              }}>
+              返回上级
+            </div>
+              :
+              (
+                location.pathname !== '/www' && <div className={styles.back} onClick={() => {
+                  history.push('/www')
+                }}>
+                  返回菜单
+                </div>
+              )
+            }
+          </div>
+        </div>
+        <div className={styles.wwwContent}>
+          {children}
+        </div>
+      </div>;
     }
 
     return <div>
@@ -64,12 +102,13 @@ export default class BasicLayout extends React.Component {
             <div className={styles.logo}/>
             {location.pathname}
             <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]}>
-              {getMenuData().map(({ icon, label, route }, index) => <Menu.Item key={route} icon={icon} onClick={() => {
-                  console.log(route);
-                }}>
-                  <Link to={route} key={index}>{label}</Link>
-                </Menu.Item>,
+              {getMenuData().map(({ icon, label, route }, index) => <Menu.Item key={route} icon={icon}>
+                  <Link to={route} key={index}>{label}-管理</Link>
+                </Menu.Item>
               )}
+              <Menu.Item icon={<VideoCameraOutlined/>}>
+                <Link to={'/www'}>前台页面</Link>
+              </Menu.Item>
             </Menu>
           </Sider>
           <Layout className={styles['site-layout']}>

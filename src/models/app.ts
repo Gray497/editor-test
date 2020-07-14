@@ -1,11 +1,12 @@
 // import { stringify } from 'querystring';
-import { Effect, history } from 'umi';
+import { Effect, Reducer, history } from 'umi';
 import { logout } from '@/services/login';
 
 // import { pathToRegexp } from 'path-to-regexp';
 
 export interface StateType {
   status?: 'ok' | 'error';
+  wwwType: string,
 }
 
 export interface AppModelType {
@@ -15,7 +16,9 @@ export interface AppModelType {
   effects: {
     logout: Effect;
   };
-  reducers: {};
+  reducers: {
+    setState: Reducer,
+  };
 }
 
 // @ts-ignore
@@ -24,6 +27,7 @@ const Model: AppModelType = {
 
   state: {
     status: undefined,
+    wwwType: '1',
   },
 
   subscriptions: {
@@ -46,7 +50,11 @@ const Model: AppModelType = {
     },
   },
 
-  reducers: {},
+  reducers: {
+    setState(state, action) {
+      return { ...state, ...action.payload }
+    },
+  },
 };
 
 export default Model;

@@ -16,7 +16,10 @@ export default class Index extends React.Component {
     console.log(this.props);
     return <div className={styles.wrap}>
       <div className={styles.contentWrap}>
-        <div className={styles.content} dangerouslySetInnerHTML={{ __html: detail.content, }}/>
+        <div className={styles.title}>
+          {detail.title}
+        </div>
+        <div dangerouslySetInnerHTML={{ __html: detail.content, }}/>
       </div>
     </div>;
   }
