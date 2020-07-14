@@ -33,7 +33,13 @@ export default class Index extends React.Component {
     return _.map(dataSource, (value, key) => {
         console.log(value, key);
         return <div className={styles.groupWrap} key={key}>
-          <div className={styles.groupName}>{key}</div>
+          <div className={styles.groupName}>
+
+            <div className={styles.tag1}>
+              <div className={styles.tag2}></div>
+            </div>
+            <div className={styles.groupNameLabel}>{key}</div>
+          </div>
           <Row gutter={30} className={styles.itemWrap}>
             {value.map(val => renderItem(val, location))}
           </Row>

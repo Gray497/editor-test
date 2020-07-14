@@ -17,7 +17,7 @@ export default class Index extends React.Component {
     return <div className={styles.wrap}>
       <div className={styles.contentWrap}>
         <div className={styles.title}>
-          {detail.title}
+          <div>{detail.title}</div>
         </div>
         <div dangerouslySetInnerHTML={{ __html: detail.content, }}/>
       </div>

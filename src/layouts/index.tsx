@@ -14,8 +14,12 @@ import {
 import { NavLink } from 'react-router-dom';
 import { connect, Link } from 'umi';
 import moment from 'moment';
+import wwwLogo from '../pages/www/assets/logo.png';
+import screenPic from '../pages/www/assets/screenPic.jpg';
 
 const { SubMenu } = Menu;
+
+var timer;
 
 const getMenuData = () => [
   { icon: <UserOutlined/>, label: '首页', route: '/index/dashboard', type: 999, },
@@ -38,6 +42,7 @@ export default class BasicLayout extends React.Component {
 
   state = {
     collapsed: false,
+    picShow: false,
   };
 
   toggle = () => {
@@ -48,10 +53,47 @@ export default class BasicLayout extends React.Component {
 
   render() {
 
+
+
+
     // @ts-ignore
     const { children, location, dispatch, _model, history }  = this.props;
     const { type, wwwType } = location.query;
+    // const {setState} = this;
+    const _this = this;
+    const {picShow} = this.state;
     // const {wwwType} = _model;
+
+    if (!document.onclick){
+      document.onclick = function(){
+        if (!!timer){
+          clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+          console.log(123)
+          _this.setState({
+            picShow: true,
+          })
+        }, 6 * 60 * 1000)
+      }
+    }
+
+    if (!timer){
+      timer = setTimeout(() => {
+        console.log(123)
+        _this.setState({
+          picShow: true,
+        })
+      }, 6 * 60 * 1000)
+    }
+
+    if (picShow){
+      return <img src={screenPic} style={{width: '100vw', height: '100vh'}} onClick={()=>{
+        _this.setState({
+          picShow: false
+        })
+      }} alt=""/>
+    }
 
     if (location.pathname === '/'){
       history.push('/index/dashboard');
@@ -64,8 +106,8 @@ export default class BasicLayout extends React.Component {
     if (location.pathname.startsWith('/www')) {
       return <div className={styles.wwwWrap}>
         <div className={styles.top}>
-          {/*<img src="" alt=""/>*/}
-          <div style={{ width: 126, height: 76, marginRight: 20, background: '#aaaaaa' }}></div>
+          <img src={wwwLogo} style={{ width: 126, height: 76, marginRight: 20}} alt=""/>
+          {/*<div style={{ width: 126, height: 76, marginRight: 20, background: '#aaaaaa' }}></div>*/}
           <div className={styles.title}>
             <div>
               { (getMenuData().find(val => {
@@ -75,7 +117,7 @@ export default class BasicLayout extends React.Component {
             { location.pathname === '/www/articleDetail' ? <div className={styles.back} onClick={() => {
                 history.push(`/www${(getMenuData().find(val => {
                   return val.type.toString() === wwwType
-                }) || {}).route}`)
+                }) || {}).route}?wwwType=${wwwType}`)
               }}>
               返回上级
             </div>
