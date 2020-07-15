@@ -42,7 +42,7 @@ export default class BasicLayout extends React.Component {
 
   state = {
     collapsed: false,
-    picShow: true,
+    picShow: false,
   };
 
   toggle = () => {
@@ -91,7 +91,11 @@ export default class BasicLayout extends React.Component {
       return <div className={styles.screenBg}>
         <div className={styles.screenTitle}>清远市清新区退役军人事务局</div>
         <div className={styles.screenSecondTitle}>欢迎您</div>
-        <div className={styles.btn}>点击查看更多》</div>
+        <div className={styles.btn} onClick={()=>{
+          _this.setState({
+            picShow: false
+          })
+        }}>点击查看更多》</div>
         {/*<img src={screenPic} style={{width: '100vw', height: '100vh'}} onClick={()=>{*/}
         {/*  _this.setState({*/}
         {/*    picShow: false*/}

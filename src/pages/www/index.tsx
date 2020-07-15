@@ -12,14 +12,16 @@ function renderItem(val) {
 export default (props) => {
   return <div className={styles.wrap}>
     <div className={styles.content}>
-      <div className={styles.content1}>
-        {[
-          { label: `革命先烈`, route: `/gmxl?wwwType=1`, className: styles.item1 },
-          { label: `立功受奖`, route: `/lgsj?wwwType=2`, className: styles.item2 },
-        ].map(renderItem)}
-      </div>
+      {/*<div className={styles.content1}>*/}
+      {/*  {[*/}
+      {/*    { label: `革命先烈`, route: `/gmxl?wwwType=1`, className: styles.item1 },*/}
+      {/*    { label: `立功受奖`, route: `/lgsj?wwwType=2`, className: styles.item2 },*/}
+      {/*  ].map(renderItem)}*/}
+      {/*</div>*/}
       <div className={styles.content2}>
         {[
+          { label: `革命先烈`, route: `/gmxl?wwwType=1`, className: styles.itemBottom },
+          { label: `立功受奖`, route: `/lgsj?wwwType=2`, className: styles.itemBottom },
           { label: `创业先锋`, route: `/cyxf?wwwType=3`, className: styles.itemBottom },
           { label: `政策文件`, route: `/zcwj?wwwType=4`, className: styles.itemBottom },
           { label: `办事流程`, route: `/bslc?wwwType=5`, className: styles.itemBottom },
