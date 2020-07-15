@@ -15,7 +15,7 @@ import { NavLink } from 'react-router-dom';
 import { connect, Link } from 'umi';
 import moment from 'moment';
 import wwwLogo from '../pages/www/assets/logo.png';
-import screenPic from '../pages/www/assets/screenPic.jpg';
+import screenPic from '../pages/www/assets/screenPic.jpeg';
 
 const { SubMenu } = Menu;
 
@@ -42,7 +42,7 @@ export default class BasicLayout extends React.Component {
 
   state = {
     collapsed: false,
-    picShow: false,
+    picShow: true,
   };
 
   toggle = () => {
@@ -88,11 +88,16 @@ export default class BasicLayout extends React.Component {
     }
 
     if (picShow){
-      return <img src={screenPic} style={{width: '100vw', height: '100vh'}} onClick={()=>{
-        _this.setState({
-          picShow: false
-        })
-      }} alt=""/>
+      return <div className={styles.screenBg}>
+        <div className={styles.screenTitle}>清远市清新区退役军人事务局</div>
+        <div className={styles.screenSecondTitle}>欢迎您</div>
+        <div className={styles.btn}>点击查看更多》</div>
+        {/*<img src={screenPic} style={{width: '100vw', height: '100vh'}} onClick={()=>{*/}
+        {/*  _this.setState({*/}
+        {/*    picShow: false*/}
+        {/*  })*/}
+        {/*}} alt=""/>*/}
+      </div>
     }
 
     if (location.pathname === '/'){
