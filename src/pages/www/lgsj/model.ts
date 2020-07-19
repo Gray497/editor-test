@@ -52,12 +52,12 @@ const Model: ModelType = {
 
   effects: {
     * query({ payload}, { call, put }) {
-      const {pageNum = 1, pageSize = 999, status: _status} = payload;
+      const {pageNum = 1, pageSize = 999} = payload;
       const { status, data, total } = yield call(query, {
         type: articleType,
         pageNum,
         pageSize,
-        status: _status
+        status: 1
       });
       let _data = _.groupBy(data.data,'groupName');
       console.log(_data)

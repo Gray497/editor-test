@@ -1,15 +1,13 @@
 import { Effect, Reducer } from 'umi';
+import _ from 'lodash';
 import { history } from 'umi';
-import { create, query, detail, update, remove, setTop, queryGroup } from '@/services/article';
+import { create, query, detail, update, remove } from './services';
 import { getLocationQuery } from '@/utils/help';
-
-const articleType = 4;
 
 export interface StateType {
   dataSource: Array<any>,
   pagination: Object,
   detail: Object,
-  groups: Array<any>
 }
 
 export interface ModelType {
@@ -23,14 +21,13 @@ export interface ModelType {
     update: Effect,
     remove: Effect,
     top: Effect,
-    queryGroup: Effect,
   };
   reducers: {
     setState: Reducer,
   };
 }
 
-const PATH = 'zcwj';
+const PATH = 'group';
 
 // @ts-ignore
 const Model: ModelType = {
@@ -44,7 +41,6 @@ const Model: ModelType = {
       total: 0,
     },
     detail: {},
-    groups: [],
     // status: undefined,
   },
 
@@ -55,38 +51,30 @@ const Model: ModelType = {
         // console.log(location);
         const { id, type } = location.query;
         if (location.pathname === `/${PATH}`) {
-          if (!!type) {
-            dispatch({
-              type: 'queryGroup',
-              payload: {
-                type: articleType,
-              },
-            });
-            if (!!id){
-              dispatch({ type: 'detail', payload: { id } });
-            }
-          } else {
-            dispatch({ type: 'query', payload: location.query });
-            dispatch({
-              type: 'setState',
-              payload: {
-                detail: {},
-              },
-            });
-          }
+          dispatch({ type: 'query', payload: location.query });
+          dispatch({
+            type: 'setState',
+            payload: {
+              detail: {},
+            },
+          });
         }
       });
     },
   },
 
   effects: {
-    * query({ payload }, { call, put, select }) {
-      const { pageNum = 1, pageSize = 10, status: _status } = payload;
-      const { status, data } = yield call(query, {
+    * query({ payload, onBack }, { call, put, select }) {
+      const { pageNum = 1, pageSize = 10, articleType } = payload;
+      const typeObj = !!articleType ? {
         type: articleType,
+      } : {
+
+      };
+      const { status, data } = yield call(query, {
         pageNum,
         pageSize,
-        status: _status,
+        ...typeObj,
       });
       if (status === 200) {
         yield put({
@@ -99,18 +87,6 @@ const Model: ModelType = {
               pageSize,
               total: data.total,
             },
-          },
-        });
-      }
-    },
-    * queryGroup({ payload }, { call, put }) {
-      const { status, data } = yield call(queryGroup, payload);
-      if (status === 200) {
-        console.log(data)
-        yield put({
-          type: 'setState',
-          payload: {
-            groups: data.data,
           },
         });
       }
@@ -136,31 +112,26 @@ const Model: ModelType = {
         });
       }
     },
-    * create({ payload }, { call, put }) {
+    * create({ payload, onBack }, { call, put }) {
       const { status } = yield call(create, {
         ...payload,
-        type: articleType,
       });
       if (status === 200) {
         history.push(window.location.pathname);
+        if (_.isFunction(onBack)){
+          onBack();
+        }
       }
     },
-    * update({ payload }, { call, put }) {
+    * update({ payload, onBack }, { call, put }) {
       const { status } = yield call(update, {
         ...payload,
-        type: articleType,
       });
       if (status === 200) {
         history.push(window.location.pathname);
-      }
-    },
-    * setTop({ payload }, { call, put }) {
-      const { status } = yield call(setTop, {
-        ...payload,
-        type: articleType,
-      });
-      if (status === 200) {
-        history.push(window.location.pathname + window.location.search);
+        if (_.isFunction(onBack)){
+          onBack();
+        }
       }
     },
   },

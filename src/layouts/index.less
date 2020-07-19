@@ -1,4 +1,21 @@
 
+
+
+//@font-face {
+//  　　font-family: '方正宋体';
+//  　　src: url('http://localhost:7000/public/4105_方正宋黑_GBK.ttf'),
+//}
+
+@font-face {
+  font-family: '方正宋体';  /* project id 1851276 */
+  src: url('//localhost:7001/public/4105_方正宋黑_GBK.ttf') format('truetype');
+}
+
+body {
+  font-family: '方正宋体';
+}
+
+
 :global {
   .bf-video-player {
     video {
@@ -104,17 +121,17 @@
   }
 
   .back {
-    font-size:24px;
-    font-weight:400;
+    font-size: 24px;
+    font-weight: 400;
     padding: 5px 28px;
-    color:rgba(145,25,25,1);
-    border:2px solid rgba(145,25,25,1);
-    border-radius:25px;
+    color: rgba(145, 25, 25, 1);
+    border: 2px solid rgba(145, 25, 25, 1);
+    border-radius: 25px;
   }
 
-  .back:hover{
+  .back:hover {
     color: #FFFFFF;
-    background-color: rgba(145,25,25,1);
+    background-color: rgba(145, 25, 25, 1);
   }
 }
 
@@ -138,34 +155,35 @@
   }
 }
 
-.screenBg{
+.screenBg {
   width: 100vw;
   height: 100vh;
   background-image: url("../pages/www/assets/screenPic.jpeg");
   background-size: 100% 100%;
   text-align: center;
-  .screenTitle{
-    padding-top: 240px;
+
+  .screenTitle {
+    padding-top: 120px;
     //position: absolute;
     //top: 284px;
-    font-size:80px;
-    font-weight:400;
-    color:rgba(145,25,25,1);
-    letter-spacing: 16px;
+    font-size: 40px;
+    font-weight: 400;
+    color: rgba(145, 25, 25, 1);
+    letter-spacing: 4px;
   }
 
-  .screenSecondTitle{
+  .screenSecondTitle {
     padding-top: 15px;
-    font-size:80px;
-    font-weight:400;
-    color:rgba(145,25,25,1);
+    font-size: 40px;
+    font-weight: 500;
+    color: rgba(145, 25, 25, 1);
     letter-spacing: 16px;
   }
 
-  .btn{
+  .btn {
     width: 400px;
     height: 90px;
-    background-color:rgba(145,25,25,1);
+    background-color: rgba(145, 25, 25, 1);
     color: #FFFFFF;
     font-size: 36px;
     font-weight: 500;

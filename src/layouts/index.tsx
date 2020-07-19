@@ -14,21 +14,18 @@ import {
 import { NavLink } from 'react-router-dom';
 import { connect, Link } from 'umi';
 import moment from 'moment';
+import { articleTypes } from '@/utils/constants';
 import wwwLogo from '../pages/www/assets/logo.png';
-import screenPic from '../pages/www/assets/screenPic.jpeg';
+
 
 const { SubMenu } = Menu;
 
 var timer;
 
 const getMenuData = () => [
-  { icon: <UserOutlined/>, label: '首页', route: '/index/dashboard', type: 999, },
-  { icon: <UserOutlined/>, label: '革命先烈', route: '/gmxl', type: 1, },
-  { icon: <UserOutlined/>, label: '立功受奖', route: '/lgsj', type: 2, },
-  { icon: <UploadOutlined/>, label: '创业先锋', route: '/cyxf', type: 3, },
-  { icon: <UserOutlined/>, label: '政策文件', route: '/zcwj', type: 4, },
-  { icon: <VideoCameraOutlined/>, label: '办事流程', route: '/bslc', type: 5, },
-  { icon: <VideoCameraOutlined/>, label: '参军入伍', route: '/cjrw', type: 6, },
+  { Icon: UserOutlined, label: '首页', route: '/index/dashboard', type: 999, },
+  ...articleTypes,
+  { Icon: VideoCameraOutlined, label: '分组类型', route: '/group', type: 998, },
 ];
 
 const { Header, Sider, Content } = Layout;
@@ -120,6 +117,7 @@ export default class BasicLayout extends React.Component {
           <div className={styles.title}>
             <div>
               { (getMenuData().find(val => {
+                console.log(val)
                 return val.type.toString() === wwwType
               }) || {}).label || '清远市清新区退役军人事务局'}
             </div>
@@ -154,7 +152,7 @@ export default class BasicLayout extends React.Component {
             <div className={styles.logo}/>
             {location.pathname}
             <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]}>
-              {getMenuData().map(({ icon, label, route }, index) => <Menu.Item key={route} icon={icon}>
+              {getMenuData().map(({ Icon, label, route }, index) => <Menu.Item key={route} icon={<Icon />}>
                   <Link to={route} key={index}>{label}-管理</Link>
                 </Menu.Item>
               )}
@@ -185,9 +183,9 @@ export default class BasicLayout extends React.Component {
                 Hi，超级管理员</span>
                   <Avatar icon={<UserOutlined/>}/>
                 </div>}>
-                  <Menu.Item key="logout">
-                    登出
-                  </Menu.Item>
+                  {/*<Menu.Item key="logout">*/}
+                  {/*  登出*/}
+                  {/*</Menu.Item>*/}
                 </SubMenu>
               </Menu>
             </Header>

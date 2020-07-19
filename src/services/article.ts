@@ -31,8 +31,6 @@ export function setTop (params) {
   return put(`/articles/${id}/setTop`, params)
 }
 
-//top
-
-//remove
-
-//detail
+export function queryGroup (params) {
+  return get(`/groups`, params)
+}

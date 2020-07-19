@@ -198,12 +198,12 @@ export default class Index extends React.Component {
       },
       //
       rowKey: (record: { id: any; }) => record.id,
-      components: {
-        body: {
-          wrapper: DraggableContainer,
-          row: DragableBodyRow,
-        },
-      },
+      // components: {
+      //   body: {
+      //     wrapper: DraggableContainer,
+      //     row: DragableBodyRow,
+      //   },
+      // },
     };
 
     if (!!id || !!type) {

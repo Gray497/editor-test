@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'umi'
+import { connect, Redirect } from 'umi'
 import { Button, Row, Input, Form } from 'antd'
 import { GithubOutlined } from '@ant-design/icons'
 // import { Trans, withI18n } from '@lingui/react'
@@ -21,6 +21,7 @@ class Login extends PureComponent {
       dispatch({ type: 'login/login', payload: values })
     }
 
+    return <Redirect to={'/index/dashboard'}/>
 
     return (
       <Fragment>

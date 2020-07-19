@@ -1,4 +1,4 @@
-import { Divider, Row, Col, Upload, message, Form, Input, Radio, Button } from 'antd';
+import { Divider, Row, Col, Upload, message, Form, Input, Radio, Button, Select } from 'antd';
 import React from 'react';
 import _ from 'lodash';
 import styles from './index.less';
@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 
 export default (props) => {
 
-  const { location, history, imageUrl, dispatch, _model: { detail }, PATH } = props;
+  const { location, history, imageUrl, dispatch, _model: { detail, groups }, PATH } = props;
   const { type } = location.query;
   const [cover, setCover] = React.useState('');
   const [form] = Form.useForm();
@@ -106,12 +106,16 @@ export default (props) => {
             <Input/>
           </Form.Item>
           <Form.Item
-            label="分组名称"
-            name="groupName"
+            label="所在分组"
+            name="groupId"
             hasFeedback
-            rules={[{ required: true, message: '分组名称不能为空!' }]}
+            rules={[{ required: true, message: '所在分组不能为空!' }]}
           >
-            <Input />
+            <Select>
+              {groups.map(val => {
+                return <Select.Option key={val.id} value={val.id}>{val.groupName}</Select.Option>
+              })}
+            </Select>
           </Form.Item>
           <Form.Item
             label="显示状态"
