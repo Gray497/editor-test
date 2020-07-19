@@ -1,8 +1,8 @@
 import { Effect, Reducer } from 'umi';
-import { query } from '@/services/article';
 import _ from 'lodash';
-
-const articleType = 2;
+import { history } from 'umi';
+import { query } from '../../group/services';
+import { getLocationQuery } from '@/utils/help';
 
 export interface StateType {
   dataSource: Array<any>,
@@ -15,14 +15,19 @@ export interface ModelType {
   state: StateType;
   subscriptions: object,
   effects: {
-    query: Effect,
+    create: Effect;
+    query: Effect;
+    detail: Effect,
+    update: Effect,
+    remove: Effect,
+    top: Effect,
   };
   reducers: {
     setState: Reducer,
   };
 }
 
-const PATH = 'www/lgsj';
+const PATH = 'www/group';
 
 // @ts-ignore
 const Model: ModelType = {
@@ -30,12 +35,11 @@ const Model: ModelType = {
 
   state: {
     dataSource: [],
-    pagination:{
+    pagination: {
       current: 1,
       showTotal: (total: any) => `共 ${total} 条记录`,
       total: 0,
     },
-    detail:{},
     // status: undefined,
   },
 
@@ -43,46 +47,48 @@ const Model: ModelType = {
 // @ts-ignore
     setup({ dispatch, history }) {
       history.listen((location: any) => {
-        if (location.pathname === `/${PATH}`){
-          dispatch({ type: 'query', payload: location.query })
+        // console.log(location);
+        const { id, type } = location.query;
+        if (location.pathname === `/${PATH}`) {
+          dispatch({ type: 'query', payload: location.query });
         }
       });
     },
   },
 
   effects: {
-    * query({ payload}, { call, put }) {
-      const {pageNum = 1, pageSize = 999, groupId} = payload;
-      const { status, data, total } = yield call(query, {
+    * query({ payload, onBack }, { call, put, select }) {
+      const { pageNum = 1, pageSize = 9999, wwwType: articleType } = payload;
+      const typeObj = !!articleType ? {
         type: articleType,
-        groupId,
+      } : {
+
+      };
+      const { status, data } = yield call(query, {
         pageNum,
         pageSize,
-        status: 1
+        ...typeObj,
       });
-      let _data = _.groupBy(data.data,'groupName');
-      console.log(_data)
-      console.log(data.data)
       if (status === 200) {
         yield put({
           type: 'setState',
-          payload:{
-            dataSource: _data,
-            pagination:{
+          payload: {
+            dataSource: data.data,
+            pagination: {
               current: pageNum,
               showTotal: (total: any) => `共 ${total} 条记录`,
               pageSize,
               total: data.total,
-            }
-          }
-        })
+            },
+          },
+        });
       }
     },
   },
 
   reducers: {
     setState(state, action) {
-      return { ...state, ...action.payload }
+      return { ...state, ...action.payload };
     },
   },
 };

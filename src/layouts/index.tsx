@@ -120,23 +120,16 @@ export default class BasicLayout extends React.Component {
                 console.log(val)
                 return val.type.toString() === wwwType
               }) || {}).label || '清远市清新区退役军人事务局'}
+              {}
             </div>
-            { location.pathname === '/www/articleDetail' ? <div className={styles.back} onClick={() => {
-                history.push(`/www${(getMenuData().find(val => {
-                  return val.type.toString() === wwwType
-                }) || {}).route}?wwwType=${wwwType}`)
-              }}>
+            {location.pathname !== '/www' && <div className={styles.back} onClick={() => {
+              history.go(-1);
+              // history.push(`/www${(getMenuData().find(val => {
+              //   return val.type.toString() === wwwType
+              // }) || {}).route}?wwwType=${wwwType}`)
+            }}>
               返回上级
-            </div>
-              :
-              (
-                location.pathname !== '/www' && <div className={styles.back} onClick={() => {
-                  history.push('/www')
-                }}>
-                  返回菜单
-                </div>
-              )
-            }
+            </div>}
           </div>
         </div>
         <div className={styles.wwwContent}>

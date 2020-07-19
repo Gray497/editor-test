@@ -21,11 +21,11 @@ export default (props) => {
       <div className={styles.content2}>
         {[
           { label: `革命先烈`, route: `/gmxl?wwwType=1`, className: styles.itemBottom },
-          { label: `立功受奖`, route: `/lgsj?wwwType=2`, className: styles.itemBottom },
-          { label: `创业先锋`, route: `/cyxf?wwwType=3`, className: styles.itemBottom },
-          { label: `政策文件`, route: `/zcwj?wwwType=4`, className: styles.itemBottom },
-          { label: `办事流程`, route: `/bslc?wwwType=5`, className: styles.itemBottom },
-          { label: `参军入伍`, route: `/cjrw?wwwType=6`, className: styles.itemBottom },
+          { label: `立功受奖`, route: `/group?wwwType=2`, className: styles.itemBottom },
+          { label: `创业先锋`, route: `/group?wwwType=3`, className: styles.itemBottom },
+          { label: `政策文件`, route: `/group?wwwType=4`, className: styles.itemBottom },
+          { label: `办事流程`, route: `/group?wwwType=5`, className: styles.itemBottom },
+          { label: `参军入伍`, route: `/group?wwwType=6`, className: styles.itemBottom },
         ].map(renderItem)}
       </div>
     </div>

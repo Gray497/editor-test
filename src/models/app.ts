@@ -1,5 +1,6 @@
 // import { stringify } from 'querystring';
 import { Effect, Reducer, history } from 'umi';
+import {queryGroup} from '@/services/article'
 import { logout } from '@/services/login';
 
 // import { pathToRegexp } from 'path-to-regexp';
@@ -7,6 +8,7 @@ import { logout } from '@/services/login';
 export interface StateType {
   status?: 'ok' | 'error';
   wwwType: string,
+  groups: Array<any>
 }
 
 export interface AppModelType {
@@ -15,6 +17,7 @@ export interface AppModelType {
   subscriptions: object,
   effects: {
     logout: Effect;
+    queryGroup: Effect,
   };
   reducers: {
     setState: Reducer,
@@ -28,14 +31,16 @@ const Model: AppModelType = {
   state: {
     status: undefined,
     wwwType: '1',
+    groups: []
   },
 
   subscriptions: {
 // @ts-ignore
     setup({ dispatch, history }) {
       history.listen((location: any) => {
-        // if (location.pathname === '/login'){
-        // }
+        if (!(location.pathname.startsWith('/www'))){
+          dispatch({type: 'queryGroup'})
+        }
       });
     },
   },
@@ -46,6 +51,21 @@ const Model: AppModelType = {
       if (status === 200) {
         localStorage.setItem('authorization', '/');
         history.push('/login');
+      }
+    },
+    //queryGroup
+    * queryGroup({ payload }, { call, put }) {
+      const { status, data } = yield call(queryGroup, {
+        pageSize: 9999,
+        pageNum: 1
+      });
+      if (status === 200) {
+        yield put({
+          type: 'setState',
+          payload: {
+            groups: data.data
+          }
+        })
       }
     },
   },

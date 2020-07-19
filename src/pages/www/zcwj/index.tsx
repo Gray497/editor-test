@@ -12,7 +12,7 @@ function renderItem(val, location) {
       <div className={styles.item}>
         <img className={styles.pic} src={`${config.API}${val.cover}`} alt=""/>
         <div className={styles.title}>{val.title}</div>
-        <div className={styles.desc}><Paragraph ellipsis={{ rows: 4 }}>{val.desc}</Paragraph></div>
+        <div className={styles.desc}><Paragraph ellipsis={{ rows: 3}}>{val.desc}</Paragraph></div>
       </div>
     </Link>
   </Col>;

@@ -30,8 +30,9 @@ const DragableBodyRow = ({ index, className, style, ...restProps }) => {
 };
 
 // @ts-ignore
-@connect((dispatch) => ({
+@connect(({app}, dispatch) => ({
   dispatch,
+  app
 }))
 export default class Index extends React.Component {
 
@@ -61,7 +62,8 @@ export default class Index extends React.Component {
   };
 
   render() {
-    const { location: { query }, _model: { pagination }, history, dispatch, PATH } = this.props;
+    const { location: { query }, _model: { pagination }, history, dispatch, PATH, app:{groups} } = this.props;
+    // console.log(app)
     const { dataSource } = this.state;
     const { id, type } = query;
 
@@ -109,6 +111,13 @@ export default class Index extends React.Component {
         title: '分组名称',
         dataIndex: 'groupName',
         key: 'groupName',
+        render(value, record){
+          const group = groups.find(val => {
+            // console.log(val.id, record.groupId)
+            return val.id === record.groupId
+          });
+          return group && group.groupName
+        }
       },
       {
         title: '状态',
