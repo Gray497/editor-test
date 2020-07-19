@@ -19,7 +19,9 @@ export default class Index extends React.Component {
         <div className={styles.title}>
           <div>{detail.title}</div>
         </div>
-        <div dangerouslySetInnerHTML={{ __html: detail.content, }}/>
+        <div className={styles.content}>
+          <div dangerouslySetInnerHTML={{ __html: detail.content, }}/>
+        </div>
       </div>
     </div>;
   }

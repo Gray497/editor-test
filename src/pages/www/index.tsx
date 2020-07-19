@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 function renderItem(val) {
   return <Link to={`/www${val.route}`} key={val.route}>
-    <div className={classnames(styles.item, val.className)}>{val.label}</div>
+    <div className={classnames(styles.item, val.className)} style={val.style}>{val.label}</div>
   </Link>;
 }
 
@@ -20,7 +20,7 @@ export default (props) => {
       {/*</div>*/}
       <div className={styles.content2}>
         {[
-          { label: `革命先烈`, route: `/gmxl?wwwType=1`, className: styles.itemBottom },
+          { label: `革命先烈`, route: `/gmxl?wwwType=1`, className: styles.itemBottom, style: {backgroundSize: '200% 100%'} },
           { label: `立功受奖`, route: `/group?wwwType=2`, className: styles.itemBottom },
           { label: `创业先锋`, route: `/group?wwwType=3`, className: styles.itemBottom },
           { label: `政策文件`, route: `/group?wwwType=4`, className: styles.itemBottom },
