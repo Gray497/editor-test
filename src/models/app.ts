@@ -1,6 +1,7 @@
 // import { stringify } from 'querystring';
 import { Effect, Reducer, history } from 'umi';
 import {queryGroup} from '@/services/article'
+import {getGroupDetail} from '@/services/app'
 import { logout } from '@/services/login';
 
 // import { pathToRegexp } from 'path-to-regexp';
@@ -18,6 +19,7 @@ export interface AppModelType {
   effects: {
     logout: Effect;
     queryGroup: Effect,
+    getGroupDetail: Effect,
   };
   reducers: {
     setState: Reducer,
@@ -41,6 +43,10 @@ const Model: AppModelType = {
         if (!(location.pathname.startsWith('/www'))){
           dispatch({type: 'queryGroup'})
         }
+        const {query: {groupId}} = location;
+        if (!!groupId){
+          dispatch({type: 'getGroupDetail', payload: {id: groupId}})
+        }
       });
     },
   },
@@ -53,7 +59,17 @@ const Model: AppModelType = {
         history.push('/login');
       }
     },
-    //queryGroup
+    * getGroupDetail({ payload }, { call, put }) {
+      const { status, data } = yield call(getGroupDetail, payload);
+      if (status === 200) {
+        yield put({
+          type: 'setState',
+          payload: {
+            group: data
+          }
+        })
+      }
+    },
     * queryGroup({ payload }, { call, put }) {
       const { status, data } = yield call(queryGroup, {
         pageSize: 9999,

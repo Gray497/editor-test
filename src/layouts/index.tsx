@@ -39,7 +39,7 @@ export default class BasicLayout extends React.Component {
 
   state = {
     collapsed: false,
-    picShow: false,
+    picShow: true,
   };
 
   toggle = () => {
@@ -55,11 +55,11 @@ export default class BasicLayout extends React.Component {
 
     // @ts-ignore
     const { children, location, dispatch, _model, history }  = this.props;
-    const { type, wwwType } = location.query;
+    const { type, wwwType, groupId } = location.query;
     // const {setState} = this;
     const _this = this;
     const {picShow} = this.state;
-    // const {wwwType} = _model;
+    const {group} = _model;
 
     if (!document.onclick){
       document.onclick = function(){
@@ -120,7 +120,7 @@ export default class BasicLayout extends React.Component {
                 console.log(val)
                 return val.type.toString() === wwwType
               }) || {}).label || '清远市清新区退役军人事务局'}
-              {}
+              {!!groupId && `-${group.groupName}`}
             </div>
             {location.pathname !== '/www' && <div className={styles.back} onClick={() => {
               history.go(-1);
