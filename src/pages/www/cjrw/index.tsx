@@ -3,6 +3,7 @@ import styles from './index.less';
 import { connect, Link } from 'umi';
 import { Row, Col, Typography } from 'antd';
 import config from '@/utils/config';
+import classnames from 'classnames';
 
 const { Paragraph } = Typography;
 
@@ -10,7 +11,7 @@ function renderItem(val, location) {
   return <Col key={val.id} span={6}>
     <Link to={`/www/articleDetail?id=${val.id}&wwwType=${location.query.wwwType}`}>
       <div className={styles.item}>
-        <img className={styles.pic} src={`${config.API}${val.cover}`} alt=""/>
+        {val.cover ? <img className={styles.pic} src={`${config.API}${val.cover}`} alt=""/> : <div className={classnames(styles.pic, styles.image)} alt=""/>}
         <div className={styles.title}>{val.title}</div>
         <div className={styles.desc}><Paragraph ellipsis={{ rows: 3}}>{val.desc}</Paragraph></div>
       </div>
