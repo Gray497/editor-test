@@ -1,7 +1,7 @@
 import { Effect, Reducer } from 'umi';
 import { query } from '@/services/article';
 
-const articleType = 5;
+const articleType = 6;
 
 export interface StateType {
   dataSource: Array<any>,

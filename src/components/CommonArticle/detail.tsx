@@ -98,7 +98,7 @@ export default (props) => {
         </Col>
         <Col push={4} span={10}>
           <Form.Item
-            label="烈士姓名"
+            label="标题"
             name="title"
             hasFeedback
             rules={[{ required: true, message: '姓名不能为空!' }]}
@@ -109,7 +109,7 @@ export default (props) => {
             label="所在分组"
             name="groupId"
             hasFeedback
-            rules={[{ required: true, message: '所在分组不能为空!' }]}
+            rules={[{ required: false, message: '所在分组不能为空!' }]}
           >
             <Select>
               {groups.map(val => {

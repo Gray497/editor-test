@@ -59,7 +59,7 @@ export default class BasicLayout extends React.Component {
     // const {setState} = this;
     const _this = this;
     const {picShow} = this.state;
-    const {group} = _model;
+    const {group = {}} = _model;
 
     if (!document.onclick){
       document.onclick = function(){
