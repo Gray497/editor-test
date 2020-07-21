@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './index.less';
 import { connect, Link } from 'umi';
-import { Row, Col, Typography } from 'antd';
+import { Row, Col, Typography, Avatar } from 'antd';
 import config from '@/utils/config';
 import _ from 'lodash';
+import { UserOutlined } from '@ant-design/icons';
 
 const { Paragraph } = Typography;
 
@@ -11,7 +12,7 @@ function renderItem(val, location) {
   return <Col key={val.id} span={6}>
     <Link to={`/www/articleDetail?id=${val.id}&wwwType=${location.query.wwwType}`}>
       <div className={styles.item}>
-        <img className={styles.pic} src={`${config.API}${val.cover}`} alt=""/>
+        {val.cover ? <img className={styles.pic} src={`${config.API}${val.cover}`} alt=""/> : <Avatar size={100} style={{backgroundColor: 'rgba(145, 25, 25, 1)'}} icon={<UserOutlined/>}/>}
         <div className={styles.title}>{val.title}</div>
         <div className={styles.desc}><Paragraph ellipsis={{ rows: 3}}>{val.desc}</Paragraph></div>
       </div>
