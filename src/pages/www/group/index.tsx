@@ -11,13 +11,15 @@ export default function Group() {
   const history = useHistory();
   const {query} = useLocation();
 
-  return <Row className={styles.wrap} gutter={20}>
-    {dataSource.map(val => <Col key={val.id} span={6} className={styles.item} onClick={() => {
+  return <Row className={styles.wrap} gutter={24}>
+    {dataSource.map(val => <Col key={val.id} span={6} onClick={() => {
       // @ts-ignore
       const route = articleTypes.find(item => item.type.toString() === query.wwwType).route;
       history.push(`/www${route}?wwwType=${query.wwwType}&groupId=${val.id}`)
     }}>
-      {val.groupName}
+      <div className={styles.item}>
+        {val.groupName}
+      </div>
     </Col>)}
   </Row>
 }
