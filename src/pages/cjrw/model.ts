@@ -104,7 +104,11 @@ const Model: ModelType = {
       }
     },
     * queryGroup({ payload }, { call, put }) {
-      const { status, data } = yield call(queryGroup, payload);
+      const { status, data } = yield call(queryGroup, {
+        pageNum: 1,
+        pageSize: 9999,
+        type: articleType,
+      });
       if (status === 200) {
         console.log(data)
         yield put({

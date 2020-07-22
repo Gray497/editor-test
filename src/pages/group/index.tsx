@@ -40,6 +40,13 @@ export default function Group() {
         title: '分组类型',
         dataIndex: 'type',
         key: 'type',
+        render(value, record): any {
+          const group = articleTypes.find(val => val.type.toString() === value.toString());
+          console.log(group)
+          console.log(articleTypes)
+          console.log(value)
+          return (group || {}).label
+        }
       },
       {
         title: '创建时间',
@@ -93,13 +100,13 @@ export default function Group() {
   return (<div>
     <div className={styles.top}>
       <div>
-        状态：<Select defaultValue="all" style={{ width: 120 }} onChange={(value: String | number) => {
+        分组类型：<Select defaultValue="all" style={{ width: 120 }} onChange={(value: String | number) => {
         // if ()
         console.log(history.push);
         if (value === 'all') {
-          history.push(getGoToFilterURL({}, ['articleType']));
+          history.push(getGoToFilterURL({}, ['articleType', 'pageNum']));
         } else {
-          history.push(getGoToFilterURL({ articleType: value }));
+          history.push(getGoToFilterURL({ articleType: value }, ['articleType', 'pageNum']));
         }
       }}>
         <Option value={'all'}>全部</Option>
