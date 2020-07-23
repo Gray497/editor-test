@@ -143,12 +143,12 @@ export default class Index extends React.Component {
           );
         }
       },
-      {
-        title: '大致介绍',
-        dataIndex: 'desc',
-        key: 'desc',
-        width: 100,
-      },
+      // {
+      //   title: '大致介绍',
+      //   dataIndex: 'desc',
+      //   key: 'desc',
+      //   width: 100,
+      // },
       {
         title: '创建时间',
         dataIndex: 'createTime',
