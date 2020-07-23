@@ -39,7 +39,7 @@ export default class BasicLayout extends React.Component {
 
   state = {
     collapsed: false,
-    picShow: true,
+    picShow: false,
   };
 
   toggle = () => {
