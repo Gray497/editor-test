@@ -22,6 +22,9 @@
       margin-top: 10px;
       font-size: 12px;
       font-weight: 400;
+      max-height: 36px;
+      overflow: hidden;
+      text-overflow-ellipsis: ellipse;
       color: rgba(255, 225, 145, 1);
     }
 
@@ -45,6 +48,12 @@
           color: rgba(251, 231, 175, 1);
         }
       }
+    }
+  }
+
+  :global{
+    div.ant-typography, .ant-typography p{
+      margin-bottom: 5px;
     }
   }
 }

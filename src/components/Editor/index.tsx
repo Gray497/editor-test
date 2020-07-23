@@ -3,9 +3,18 @@ import {history} from 'umi';
 import {message} from 'antd';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
-import uploadManager from 'utils/upload';
-import config from 'utils/config';
+import uploadManager from '@/utils/upload';
+import config from '@/utils/config';
 import _ from 'lodash';
+import 'braft-editor/dist/index.css'
+import 'braft-extensions/dist/color-picker.css'
+import ColorPicker from 'braft-extensions/dist/color-picker'
+
+
+BraftEditor.use(ColorPicker({
+  includeEditors: ['editor-with-color-picker'],
+  theme: 'light' // 支持dark和light两种主题，默认为dark
+}))
 
 export default class EditorDemo extends React.Component {
 
@@ -90,10 +99,11 @@ export default class EditorDemo extends React.Component {
     return (
       <div className="my-component">
         <BraftEditor
-          ref={instance => this.editorInstance = instance}
+          // ref={instance => this.editorInstance = instance}
           // controls={controls}
           value={editorState}
           onChange={this.handleChange}
+          id="editor-with-color-picker"
           // extendControls={extendControls}
           media={{ uploadFn: uploadFn }}
         />
