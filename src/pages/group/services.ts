@@ -25,3 +25,8 @@ export function remove (params) {
   const {id} = params;
   return deleteForm(`/groups/${id}`)
 }
+
+export function setTop (params) {
+  const {id} = params;
+  return put(`/groups/${id}/setTop`, params)
+}

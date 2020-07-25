@@ -42,9 +42,9 @@ export default function Group() {
         key: 'type',
         render(value, record): any {
           const group = articleTypes.find(val => val.type.toString() === value.toString());
-          console.log(group)
-          console.log(articleTypes)
-          console.log(value)
+          // console.log(group)
+          // console.log(articleTypes)
+          // console.log(value)
           return (group || {}).label
         }
       },
@@ -62,6 +62,16 @@ export default function Group() {
         key: 'op',
         render(value, record) {
           return <Space size="middle">
+            <a onClick={() => {
+              // console.log()
+              dispatch({
+                type: `${PATH}/setTop`,
+                payload: {
+                  id: record.id,
+                  top: record.top === 1 ? 0 : 1
+                },
+              });
+            }}>{record.top === 1 ? '取消置顶' : '置顶'}</a>
             <a onClick={() => {
               setModalVisible(true);
               setEditType('update');
@@ -102,11 +112,12 @@ export default function Group() {
       <div>
         分组类型：<Select defaultValue="all" style={{ width: 120 }} onChange={(value: String | number) => {
         // if ()
-        console.log(history.push);
+        // console.log(history.push);
         if (value === 'all') {
           history.push(getGoToFilterURL({}, ['articleType', 'pageNum']));
         } else {
-          history.push(getGoToFilterURL({ articleType: value }, ['articleType', 'pageNum']));
+          console.log(getGoToFilterURL({ articleType: value }, ['articleType', 'pageNum']))
+          history.push(getGoToFilterURL({ articleType: value }, ['pageNum']));
         }
       }}>
         <Option value={'all'}>全部</Option>

@@ -1,7 +1,7 @@
 import { Effect, Reducer } from 'umi';
 import _ from 'lodash';
 import { history } from 'umi';
-import { create, query, detail, update, remove } from './services';
+import { create, query, detail, update, remove, setTop } from './services';
 import { getLocationQuery } from '@/utils/help';
 
 export interface StateType {
@@ -21,6 +21,7 @@ export interface ModelType {
     update: Effect,
     remove: Effect,
     top: Effect,
+    setTop: Effect,
   };
   reducers: {
     setState: Reducer,
@@ -29,6 +30,7 @@ export interface ModelType {
 
 const PATH = 'group';
 
+// @ts-ignore
 // @ts-ignore
 const Model: ModelType = {
   namespace: PATH,
@@ -64,6 +66,14 @@ const Model: ModelType = {
   },
 
   effects: {
+    * setTop({ payload }, { call, put }) {
+      const { status } = yield call(setTop, {
+        ...payload,
+      });
+      if (status === 200) {
+        history.push(window.location.pathname + window.location.search);
+      }
+    },
     * query({ payload, onBack }, { call, put, select }) {
       const { pageNum = 1, pageSize = 10, articleType } = payload;
       const typeObj = !!articleType ? {
