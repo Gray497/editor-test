@@ -81,7 +81,7 @@ const Model: ModelType = {
 
   effects: {
     * query({ payload }, { call, put, select }) {
-      const { pageNum = 1, pageSize = 10, status: _status } = payload;
+      const { pageNum = 1, pageSize = 10, status: _status, title } = payload;
       const { status, data } = yield call(query, {
         type: articleType,
         pageNum,

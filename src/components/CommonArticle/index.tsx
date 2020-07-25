@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Space, Button, Select, Modal, Tooltip } from 'antd';
+import { Table, Space, Button, Select, Modal, Tooltip, Input } from 'antd';
 import styles from './index.less';
 import Detail from './detail';
 import { connect, Link } from 'umi';
@@ -17,6 +17,7 @@ import moment from 'moment';
 
 const { Option } = Select;
 const { confirm } = Modal;
+const { Search } = Input;
 
 const DragHandle = sortableHandle(() => (
   <MenuOutlined style={{ cursor: 'pointer', color: '#999' }}/>
@@ -30,9 +31,9 @@ const DragableBodyRow = ({ index, className, style, ...restProps }) => {
 };
 
 // @ts-ignore
-@connect(({app}, dispatch) => ({
+@connect(({ app }, dispatch) => ({
   dispatch,
-  app
+  app,
 }))
 export default class Index extends React.Component {
 
@@ -62,7 +63,7 @@ export default class Index extends React.Component {
   };
 
   render() {
-    const { location: { query }, _model: { pagination }, history, dispatch, PATH, app:{groups} } = this.props;
+    const { location: { query }, _model: { pagination }, history, dispatch, PATH, app: { groups } } = this.props;
     // console.log(app)
     const { dataSource } = this.state;
     const { id, type } = query;
@@ -91,7 +92,7 @@ export default class Index extends React.Component {
         // width: 30,
       },
       {
-        title: '姓名',
+        title: '标题',
         dataIndex: 'title',
         key: 'title',
         // width: 100,
@@ -100,31 +101,31 @@ export default class Index extends React.Component {
         title: '图片',
         dataIndex: 'cover',
         key: 'cover',
-        render(value){
-          return <Tooltip title={<img style={{height: 200}} src={`${config.API}${value}`} alt=""/>}>
-            <img style={{height: 50}} src={`${config.API}${value}`} alt=""/>
-          </Tooltip>
-        }
+        render(value) {
+          return <Tooltip title={<img style={{ height: 200 }} src={`${config.API}${value}`} alt=""/>}>
+            <img style={{ height: 50 }} src={`${config.API}${value}`} alt=""/>
+          </Tooltip>;
+        },
         // width: '20%',
       },
       {
         title: '分组名称',
         dataIndex: 'groupName',
         key: 'groupName',
-        render(value, record){
+        render(value, record) {
           const group = groups.find(val => {
             // console.log(val.id, record.groupId)
-            return val.id === record.groupId
+            return val.id === record.groupId;
           });
-          return group && group.groupName
-        }
+          return group && group.groupName;
+        },
       },
       {
         title: '状态',
         dataIndex: 'status',
         key: 'status',
         // width: 60,
-        render(value){
+        render(value) {
 
           let text, status, color;
           if (value === 1) {
@@ -137,11 +138,12 @@ export default class Index extends React.Component {
 
           return (
             <div className={styles.status}>
-              <div className={classnames(styles.dot, status ? styles.success : styles.error)} style={{backgroundColor: color}}></div>
+              <div className={classnames(styles.dot, status ? styles.success : styles.error)}
+                   style={{ backgroundColor: color }}></div>
               <div>{text}</div>
             </div>
           );
-        }
+        },
       },
       // {
       //   title: '大致介绍',
@@ -153,9 +155,9 @@ export default class Index extends React.Component {
         title: '创建时间',
         dataIndex: 'createTime',
         key: 'createTime',
-        render(value){
-          return moment(value).format('YYYY-MM-DD HH:mm:ss')
-        }
+        render(value) {
+          return moment(value).format('YYYY-MM-DD HH:mm:ss');
+        },
       },
       {
         title: '操作',
@@ -169,7 +171,7 @@ export default class Index extends React.Component {
                 type: `${PATH}/setTop`,
                 payload: {
                   id: record.id,
-                  top: record.top === 1 ? 0 : 1
+                  top: record.top === 1 ? 0 : 1,
                 },
               });
             }}>{record.top === 1 ? '取消置顶' : '置顶'}</a>
@@ -203,7 +205,7 @@ export default class Index extends React.Component {
       columns: columns,
       pagination: {
         ...pagination,
-        showSizeChanger: true
+        showSizeChanger: true,
       },
       //
       rowKey: (record: { id: any; }) => record.id,
@@ -223,19 +225,31 @@ export default class Index extends React.Component {
       <div className={styles.wrap}>
         <div className={styles.top}>
           <div>
-            状态：<Select defaultValue="all" style={{ width: 120 }} onChange={(value: String | number) => {
-            // if ()
-            console.log(history.push);
-            if (value === 'all') {
-              history.push(getGoToFilterURL({}, ['status']));
-            } else {
-              history.push(getGoToFilterURL({ status: value }));
-            }
-          }}>
-            <Option value={'all'}>全部</Option>
-            <Option value={0}>隐藏</Option>
-            <Option value={1}>显示</Option>
-          </Select>
+            <div>
+              状态搜索：<Select defaultValue="all" style={{ width: 120 }} onChange={(value: String | number) => {
+              // if ()
+              console.log(history.push);
+              if (value === 'all') {
+                history.push(getGoToFilterURL({}, ['status']));
+              } else {
+                history.push(getGoToFilterURL({ status: value }, ['pageNum']));
+              }
+            }}>
+              <Option value={'all'}>全部</Option>
+              <Option value={0}>隐藏</Option>
+              <Option value={1}>显示</Option>
+            </Select>
+            </div>
+            <div style={{marginTop: 10, display: 'flex' }}>
+              <span style={{minWidth: 70}}>标题搜索：</span>
+              <Search placeholder="输入标题关键字搜索" onSearch={value => {
+                if (value){
+                  history.push(getGoToFilterURL({title: value}, ['pageNum']));
+                } else {
+                  history.push(getGoToFilterURL({}, ['title', 'pageNum']));
+                }
+              }} enterButton/>
+            </div>
           </div>
           <Button type='primary'><Link to={`./${PATH}?type=create`}>新建</Link></Button>
         </div>
