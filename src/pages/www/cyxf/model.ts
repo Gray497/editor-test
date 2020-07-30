@@ -67,7 +67,7 @@ const Model: ModelType = {
         yield put({
           type: 'setState',
           payload: {
-            dataSource: _data,
+            dataSource: data.data,
             pagination: {
               current: pageNum,
               showTotal: (total: any) => `共 ${total} 条记录`,

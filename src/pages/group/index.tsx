@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useSelector, useHistory, useLocation, useDispatch } from 'umi';
 import CommonTable from '@/components/CommonTable';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, Select, Modal, Form, Input, Space } from 'antd';
+import { Button, Select, Modal, Form, Input, Space, Upload, message, Row, Col } from 'antd';
 import styles from './index.less';
 import { getGoToFilterURL } from '@/utils/help';
 import { articleTypes } from '@/utils/constants';
 import moment from 'moment';
+import _ from 'lodash';
+import config from '@/utils/config';
 
 const Option = Select.Option;
 const { confirm } = Modal;
@@ -18,6 +20,7 @@ export default function Group() {
   const [modalVisible, setModalVisible] = useState(false);
   const [editType, setEditType] = useState('create');
   const [editRecord, setEditRecord] = useState({});
+  const [cover, setCover] = React.useState('');
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -26,6 +29,14 @@ export default function Group() {
   const tableProps = {
     dataSource: dataSource,
     columns: [
+      {
+        title: '默认图片',
+        dataIndex: 'cover',
+        key: 'cover',
+        render(value){
+          return <img src={config.API + value} alt="" style={{width: 50, height: 50, borderRadius: "50%"}}/>
+        }
+      },
       {
         title: 'ID',
         dataIndex: 'id',
@@ -76,6 +87,7 @@ export default function Group() {
               setModalVisible(true);
               setEditType('update');
               setEditRecord(record);
+              setCover(record.cover);
             }}>编辑</a>
             <a style={{ color: 'red' }} onClick={() => {
               confirm({
@@ -107,7 +119,37 @@ export default function Group() {
     rowKey: (record: { id: any; }) => record.id,
   };
 
-  return (<div>
+  const upLoadProps = {
+    listType: 'picture-card',
+    name: 'avatar',
+    multiple: false,
+    action: `${config.API}/upload`,
+    headers: {
+      'authorization': localStorage.getItem('authorization'),
+    },
+    accept: 'image/*',
+    onChange(info: { file: { name?: any; status?: any; }; fileList: any; }) {
+      const { status } = info.file;
+      if (status !== 'uploading') {
+        console.log(info.file, info.fileList);
+        if (info.file.error && info.file.error.status === 401){
+          history.push('/login');
+          return
+        }
+      }
+      if (status === 'done') {
+        setCover(`${info.file.response.url}`);
+        message.success(`${info.file.name} 上传成功.`);
+      } else if (status === 'error') {
+        message.error(`${info.file.name} 上传失败.`);
+      }
+    },
+  };
+
+  console.log(editRecord)
+  console.log(form.getFieldsValue())
+
+  return (<div className={styles.warp}>
     <div className={styles.top}>
       <div>
         分组类型：<Select defaultValue="all" style={{ width: 120 }} onChange={(value: String | number) => {
@@ -126,9 +168,15 @@ export default function Group() {
         }
       </Select>
       </div>
-      <Button type='primary' onClick={() => setModalVisible(true)}>新建</Button>
+      <Button type='primary' onClick={() => {
+        setEditType('create');
+        setEditRecord({});
+        setModalVisible(true);
+        setCover('');
+      }}>新建</Button>
     </div>
     <CommonTable {...tableProps}/>
+
     <Modal
       title={editType === 'create' ? '新建分组' : '修改分组'}
       centered
@@ -145,6 +193,7 @@ export default function Group() {
               payload: {
                 ...values,
                 ...id,
+                cover,
               },
               onBack: () => {
                 console.log(123)
@@ -156,13 +205,23 @@ export default function Group() {
             console.log(errorInfo);
           });
       }}
-      onCancel={() => setModalVisible(false)}
+      onCancel={() => {
+        setModalVisible(false);
+        form.resetFields(['groupName', 'type']);
+      }}
+      afterClose={() => {
+        console.log(123132)
+        form.resetFields(['groupName', 'type']);
+      }}
     >
       <Form
         className={styles.wrap}
         form={form}
         initialValues={editType === 'update' ? editRecord : { }}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 14 }}
       >
+
         <Form.Item
           label="分组名称"
           name="groupName"
@@ -181,6 +240,28 @@ export default function Group() {
             {articleTypes.map(val => <Option key={val.type} value={val.type}>{val.label}</Option>)}
           </Select>
         </Form.Item>
+
+        <Form.Item
+        label={"分组默认图片"}
+        >
+          <Upload {...upLoadProps}>
+            {!_.isEmpty(cover) ? <img src={`${config.API}${cover}`} alt="avatar" style={{ width: '100%' }}/> : <div>
+              <div className="ant-upload-text">Upload</div>
+            </div>}
+          </Upload>
+        </Form.Item>
+        {/*<Row>*/}
+        {/*  <Col span={6} style={{textAlign: 'right'}}>*/}
+        {/*    分组默认图片：*/}
+        {/*  </Col>*/}
+        {/*  <Col span={14}>*/}
+        {/*    <Upload {...upLoadProps}>*/}
+        {/*      {!_.isEmpty(cover) ? <img src={`${config.API}${cover}`} alt="avatar" style={{ width: '100%' }}/> : <div>*/}
+        {/*        <div className="ant-upload-text">Upload</div>*/}
+        {/*      </div>}*/}
+        {/*    </Upload>*/}
+        {/*  </Col>*/}
+        {/*</Row>*/}
       </Form>
     </Modal>
   </div>);
