@@ -228,7 +228,7 @@ export default class Index extends React.Component {
             <div>
               状态搜索：<Select defaultValue="all" style={{ width: 120 }} onChange={(value: String | number) => {
               // if ()
-              console.log(history.push);
+              // console.log(history.push);
               if (value === 'all') {
                 history.push(getGoToFilterURL({}, ['status']));
               } else {
@@ -251,7 +251,7 @@ export default class Index extends React.Component {
               }} enterButton/>
             </div>
           </div>
-          <Button type='primary'><Link to={`./${PATH}?type=create`}>新建</Link></Button>
+          <Button type='primary'><Link to={getGoToFilterURL({type: `create`})}>新建</Link></Button>
         </div>
         <CommonTable {...tableProps}/>
       </div>

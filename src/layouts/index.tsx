@@ -117,7 +117,7 @@ export default class BasicLayout extends React.Component {
           <div className={styles.title}>
             <div>
               { (getMenuData().find(val => {
-                console.log(val)
+                // console.log(val)
                 return val.type.toString() === wwwType
               }) || {}).label || '清远市清新区退役军人事务局'}
               {!!groupId && `-${group.groupName}`}
@@ -145,8 +145,8 @@ export default class BasicLayout extends React.Component {
             <div className={styles.logo}/>
             {location.pathname}
             <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]}>
-              {getMenuData().map(({ Icon, label, route }, index) => <Menu.Item key={route} icon={<Icon />}>
-                  <Link to={route} key={index}>{label}-管理</Link>
+              {getMenuData().map(({ Icon, label, route, type }, index) => <Menu.Item key={`${route}/${type}`} icon={<Icon />}>
+                  <Link to={`${route}/${type}`} key={index}>{label}-管理</Link>
                 </Menu.Item>
               )}
               <Menu.Item icon={<VideoCameraOutlined/>}>

@@ -12,7 +12,7 @@ import config from '@/utils/config';
 
 const Option = Select.Option;
 const { confirm } = Modal;
-const PATH = 'group';
+const PATH = 'groups';
 
 export default function Group() {
 

@@ -2,8 +2,7 @@ import { Effect, Reducer } from 'umi';
 import { history } from 'umi';
 import { create, query, detail, update, remove, setTop, queryGroup } from '@/services/article';
 import { getLocationQuery } from '@/utils/help';
-
-const articleType = 1;
+import { pathToRegexp } from 'path-to-regexp';
 
 export interface StateType {
   dataSource: Array<any>,
@@ -30,7 +29,15 @@ export interface ModelType {
   };
 }
 
-const PATH = 'gmxl';
+const PATH = 'www/articles1232';
+
+function getAricleType(pathname = window.location.pathname) {
+  const match = pathToRegexp(`/${PATH}/:id`).exec(pathname);
+  if (match && match[1]) {
+    return match[1];
+  }
+  return false;
+}
 
 // @ts-ignore
 const Model: ModelType = {
@@ -52,17 +59,16 @@ const Model: ModelType = {
 // @ts-ignore
     setup({ dispatch, history }) {
       history.listen((location: any) => {
-        // console.log(location);
         const { id, type } = location.query;
-        if (location.pathname === `/${PATH}`) {
+        if (location.pathname.startsWith(`/${PATH}`)) {
           if (!!type) {
             dispatch({
               type: 'queryGroup',
               payload: {
-                type: articleType,
+                type: getAricleType(),
               },
             });
-            if (!!id){
+            if (!!id) {
               dispatch({ type: 'detail', payload: { id } });
             }
           } else {
@@ -83,7 +89,7 @@ const Model: ModelType = {
     * query({ payload }, { call, put, select }) {
       const { pageNum = 1, pageSize = 10, status: _status, title } = payload;
       const { status, data } = yield call(query, {
-        type: articleType,
+        type: getAricleType(),
         pageNum,
         pageSize,
         status: _status,
@@ -108,10 +114,10 @@ const Model: ModelType = {
       const { status, data } = yield call(queryGroup, {
         pageNum: 1,
         pageSize: 9999,
-        type: articleType,
+        type: getAricleType(),
       });
       if (status === 200) {
-        console.log(data)
+        console.log(data);
         yield put({
           type: 'setState',
           payload: {
@@ -144,7 +150,7 @@ const Model: ModelType = {
     * create({ payload }, { call, put }) {
       const { status } = yield call(create, {
         ...payload,
-        type: articleType,
+        type: getAricleType(),
       });
       if (status === 200) {
         history.push(window.location.pathname);
@@ -153,7 +159,7 @@ const Model: ModelType = {
     * update({ payload }, { call, put }) {
       const { status } = yield call(update, {
         ...payload,
-        type: articleType,
+        type: getAricleType(),
       });
       if (status === 200) {
         history.push(window.location.pathname);
@@ -162,7 +168,7 @@ const Model: ModelType = {
     * setTop({ payload }, { call, put }) {
       const { status } = yield call(setTop, {
         ...payload,
-        type: articleType,
+        type: getAricleType(),
       });
       if (status === 200) {
         history.push(window.location.pathname + window.location.search);

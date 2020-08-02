@@ -1,8 +1,9 @@
 import { Effect, Reducer } from 'umi';
 import _ from 'lodash';
 import { history } from 'umi';
-import { query } from '../../group/services';
+import { query } from '../../../groups/services';
 import { getLocationQuery } from '@/utils/help';
+import { pathToRegexp } from 'path-to-regexp';
 
 export interface StateType {
   dataSource: Array<any>,
@@ -27,7 +28,17 @@ export interface ModelType {
   };
 }
 
-const PATH = 'www/group';
+const PATH = 'www/groups';
+
+function getAricleType(pathname = window.location.pathname) {
+  const match = pathToRegexp(`/${PATH}/:id`).exec(pathname);
+  if (match && match[1]) {
+    return match[1];
+  }
+  return false;
+}
+
+
 
 // @ts-ignore
 const Model: ModelType = {
@@ -49,7 +60,7 @@ const Model: ModelType = {
       history.listen((location: any) => {
         // console.log(location);
         const { id, type } = location.query;
-        if (location.pathname === `/${PATH}`) {
+        if (location.pathname.startsWith(`/${PATH}`)) {
           dispatch({ type: 'query', payload: location.query });
         }
       });
@@ -58,16 +69,11 @@ const Model: ModelType = {
 
   effects: {
     * query({ payload, onBack }, { call, put, select }) {
-      const { pageNum = 1, pageSize = 9999, wwwType: articleType } = payload;
-      const typeObj = !!articleType ? {
-        type: articleType,
-      } : {
-
-      };
+      const { pageNum = 1, pageSize = 9999 } = payload;
       const { status, data } = yield call(query, {
         pageNum,
         pageSize,
-        ...typeObj,
+        type: getAricleType(),
       });
       if (status === 200) {
         yield put({

@@ -1,13 +1,14 @@
 import { Effect, Reducer } from 'umi';
-import _ from 'lodash';
 import { history } from 'umi';
-import { create, query, detail, update, remove, setTop } from './services';
+import { create, query, detail, update, remove, setTop, queryGroup } from '@/services/article';
 import { getLocationQuery } from '@/utils/help';
+import { pathToRegexp } from 'path-to-regexp';
 
 export interface StateType {
   dataSource: Array<any>,
   pagination: Object,
   detail: Object,
+  groups: Array<any>
 }
 
 export interface ModelType {
@@ -21,16 +22,23 @@ export interface ModelType {
     update: Effect,
     remove: Effect,
     top: Effect,
-    setTop: Effect,
+    queryGroup: Effect,
   };
   reducers: {
     setState: Reducer,
   };
 }
 
-const PATH = 'group';
+const PATH = 'articles';
 
-// @ts-ignore
+function getAricleType(pathname = window.location.pathname) {
+  const match = pathToRegexp(`/${PATH}/:id`).exec(pathname);
+  if (match && match[1]) {
+    return match[1];
+  }
+  return false;
+}
+
 // @ts-ignore
 const Model: ModelType = {
   namespace: PATH,
@@ -43,6 +51,7 @@ const Model: ModelType = {
       total: 0,
     },
     detail: {},
+    groups: [],
     // status: undefined,
   },
 
@@ -50,41 +59,41 @@ const Model: ModelType = {
 // @ts-ignore
     setup({ dispatch, history }) {
       history.listen((location: any) => {
-        // console.log(location);
         const { id, type } = location.query;
-        if (location.pathname === `/${PATH}`) {
-          dispatch({ type: 'query', payload: location.query });
-          dispatch({
-            type: 'setState',
-            payload: {
-              detail: {},
-            },
-          });
+        if (location.pathname.startsWith(`/${PATH}`)) {
+          if (!!type) {
+            dispatch({
+              type: 'queryGroup',
+              payload: {
+                type: getAricleType(),
+              },
+            });
+            if (!!id) {
+              dispatch({ type: 'detail', payload: { id } });
+            }
+          } else {
+            dispatch({ type: 'query', payload: location.query });
+            dispatch({
+              type: 'setState',
+              payload: {
+                detail: {},
+              },
+            });
+          }
         }
       });
     },
   },
 
   effects: {
-    * setTop({ payload }, { call, put }) {
-      const { status } = yield call(setTop, {
-        ...payload,
-      });
-      if (status === 200) {
-        history.push(window.location.pathname + window.location.search);
-      }
-    },
-    * query({ payload, onBack }, { call, put, select }) {
-      const { pageNum = 1, pageSize = 10, articleType } = payload;
-      const typeObj = !!articleType ? {
-        type: articleType,
-      } : {
-
-      };
+    * query({ payload }, { call, put, select }) {
+      const { pageNum = 1, pageSize = 10, status: _status, title } = payload;
       const { status, data } = yield call(query, {
+        type: getAricleType(),
         pageNum,
         pageSize,
-        ...typeObj,
+        status: _status,
+        title,
       });
       if (status === 200) {
         yield put({
@@ -97,6 +106,22 @@ const Model: ModelType = {
               pageSize,
               total: data.total,
             },
+          },
+        });
+      }
+    },
+    * queryGroup({ payload }, { call, put }) {
+      const { status, data } = yield call(queryGroup, {
+        pageNum: 1,
+        pageSize: 9999,
+        type: getAricleType(),
+      });
+      if (status === 200) {
+        console.log(data);
+        yield put({
+          type: 'setState',
+          payload: {
+            groups: data.data,
           },
         });
       }
@@ -122,26 +147,31 @@ const Model: ModelType = {
         });
       }
     },
-    * create({ payload, onBack }, { call, put }) {
+    * create({ payload }, { call, put }) {
       const { status } = yield call(create, {
         ...payload,
+        type: getAricleType(),
       });
       if (status === 200) {
         history.push(window.location.pathname);
-        if (_.isFunction(onBack)){
-          onBack();
-        }
       }
     },
-    * update({ payload, onBack }, { call, put }) {
+    * update({ payload }, { call, put }) {
       const { status } = yield call(update, {
         ...payload,
+        type: getAricleType(),
       });
       if (status === 200) {
         history.push(window.location.pathname);
-        if (_.isFunction(onBack)){
-          onBack();
-        }
+      }
+    },
+    * setTop({ payload }, { call, put }) {
+      const { status } = yield call(setTop, {
+        ...payload,
+        type: getAricleType(),
+      });
+      if (status === 200) {
+        history.push(window.location.pathname + window.location.search);
       }
     },
   },

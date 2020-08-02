@@ -4,7 +4,7 @@ import styles from './index.less';
 import {Row, Col} from 'antd';
 import {articleTypes} from '@/utils/constants'
 
-const PATH = 'www/group';
+const PATH = 'www/groups';
 
 export default function Group() {
   const { pagination, dataSource } = useSelector(state => state[PATH]);
@@ -13,9 +13,7 @@ export default function Group() {
 
   return <Row className={styles.wrap} gutter={24}>
     {dataSource.map(val => <Col key={val.id} span={6} onClick={() => {
-      // @ts-ignore
-      const route = articleTypes.find(item => item.type.toString() === query.wwwType).route;
-      history.push(`/www${route}?wwwType=${query.wwwType}&groupId=${val.id}`)
+      history.push(`/www/articles?wwwType=${query.wwwType}&groupId=${val.id}`)
     }}>
       <div className={styles.item}>
         {val.groupName}
