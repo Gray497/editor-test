@@ -6,7 +6,7 @@
     "build": "umi build",
     "build-analyze": "cross-env ANALYZE=1 umi build",
     "test": "umi test",
-    "lint": "eslint {src,mock,tests}/**/*.{ts,tsx} --fix",
+    "lint": "eslint {src,mock,tests}/**/*.{ts,tsx} --fix"
   },
   "dependencies": {
     "antd": "4.4.2",
