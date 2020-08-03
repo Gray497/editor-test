@@ -1,7 +1,8 @@
 // @ts-ignore
 import { defineConfig } from 'umi/lib/defineConfig';
-import {resolve} from "path";
-let BundleAnalyzerPlugin = require("umi-webpack-bundle-analyzer").BundleAnalyzerPlugin;
+import { resolve } from 'path';
+
+// let BundleAnalyzerPlugin = require('umi-webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 export default defineConfig({
   hash: true,
@@ -18,8 +19,8 @@ export default defineConfig({
   // },
   alias: {
     // !!! 按字母排序
-    components: resolve(__dirname, "./src/components"),
-    utils: resolve(__dirname, "./src/utils"),
+    components: resolve(__dirname, './src/components'),
+    utils: resolve(__dirname, './src/utils'),
   },
   targets: {
     ie: 11,
@@ -34,14 +35,28 @@ export default defineConfig({
   //     .plugin("umi-webpack-bundle-analyzer")
   //     .use(new BundleAnalyzerPlugin());
   // },
-  // routes: [
-  //   {
-  //     path: '/',
-  //     component: '../layouts/index',
-  //     routes: [
-  //       { path: '/', component: '../pages/index' }
-  //     ]
-  //   }
-  // ],
-})
+  routes: [
+    {
+      path: '/admin',
+      component: '../layouts/index',
+      routes: [
+        { path: '/admin/articles/:articleType', component: '../pages/articles/articleType' },
+        { path: '/admin/groups', component: '../pages/groups' },
+        { path: '/admin/dashboard', component: '../pages/dashboard' },
+      ],
+    },
+    {
+      path: '/www',
+      component: '../pages/www',
+      routes: [
+        { path: '/www/dashboard', component: '../pages/www/dashboard' },
+        { path: '/www/articles/:articleType', component: '../pages/www/articles/articleType' },
+        { path: '/www/articles', component: '../pages/www/articles/articleType' },
+        { path: '/www/groups/:articleType', component: '../pages/www/groups/articleType' },
+        { path: '/www/articleDetail', component: '../pages/www/articleDetail' },
+      ]
+    },
+
+  ],
+});
 

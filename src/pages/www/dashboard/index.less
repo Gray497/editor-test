@@ -1,0 +1,90 @@
+
+.wrap {
+  .content {
+    .content1 {
+      .itemWrap();
+
+      .item1 {
+        width: 820px;
+        height: 350px;
+        background-image: url("../assets/革命先烈.png");
+        background-size: 100% 100%;
+      }
+
+      .item2 {
+        margin-left: 20px;
+        width: 420px;
+        height: 350px;
+        background-image: url("../assets/立功受奖.png");
+        background-size: 100% 100%;
+      }
+    }
+
+    .content2 {
+      margin-top: 10px;
+      .itemWrap();
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+      .itemBottom {
+        //width: 70px;
+        width: 230px;
+        height: 230px;
+        margin-bottom: 25px;
+        background-size: 100% 100%;
+      }
+
+      a:nth-child(1) {
+        .itemBottom {
+          background-image: url("../assets/革命先烈.png");
+        }
+      }
+      a:nth-child(2) {
+        .itemBottom {
+          background-image: url("../assets/立功受奖.png");
+        }
+      }
+      a:nth-child(3) {
+        .itemBottom {
+          background-image: url("../assets/创业先锋.png");
+        }
+      }
+      a:nth-child(4) {
+        .itemBottom {
+          background-image: url("../assets/政策文件.png");
+        }
+      }
+      a:nth-child(5) {
+        .itemBottom {
+          background-image: url("../assets/办事流程.png");
+        }
+      }
+      a:nth-child(6) {
+        .itemBottom {
+          background-image: url("../assets/参军入伍.png");
+        }
+      }
+
+      //.itemBottom + .itemBottom{
+      //  margin-left: 20px;
+      //}
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 20px;
+      font-size: 28px;
+      color: rgba(251, 231, 175, 1);
+      //background-color: #aaaaaa;
+    }
+  }
+}
+
+.itemWrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  //padding: 50px;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import CommonArticle from '@/components/CommonArticle'
 
-const PATH = 'articles'
+const PATH = 'admin/articles'
 // @ts-ignore
 @connect(({[PATH]: _model}, dispatch) => ({
   // dispatch,

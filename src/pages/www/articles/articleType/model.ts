@@ -2,8 +2,6 @@ import { Effect, Reducer } from 'umi';
 import { query } from '@/services/article';
 import { pathToRegexp } from 'path-to-regexp';
 
-const articleType = 1;
-
 export interface StateType {
   dataSource: Array<any>,
   pagination: Object,
@@ -35,13 +33,13 @@ function getAricleType(pathname = window.location.pathname) {
 
 const initState = {
   dataSource: [],
-  pagination:{
+  pagination: {
     current: 1,
     showTotal: (total: any) => `共 ${total} 条记录`,
     total: 0,
   },
-  detail:{},
-}
+  detail: {},
+};
 
 // @ts-ignore
 const Model: ModelType = {
@@ -53,44 +51,64 @@ const Model: ModelType = {
 // @ts-ignore
     setup({ dispatch, history }) {
       history.listen((location: any) => {
-        if (location.pathname.startsWith(`/${PATH}`)){
-          dispatch({ type: 'query', payload: location.query })
+        const { pathname } = location;
+        if (pathname.startsWith(`/${PATH}`) || pathname.startsWith('/www/articles')) {
+          dispatch({
+            type: 'query',
+            payload: {
+              ...location.query,
+              pageSize: 20,
+            },
+            back(){
+              dispatch({
+                type: 'query',
+                payload: {
+                  ...location.query,
+                },
+              });
+            }
+          });
         } else {
-          dispatch({type: 'setState', payload: initState})
+          dispatch({ type: 'setState', payload: initState });
         }
       });
     },
   },
 
   effects: {
-    * query({ payload}, { call, put }) {
-      const {pageNum = 1, pageSize = 999} = payload;
+    * query({ payload, back }, { call, put, select }) {
+      const { pageNum = 1, pageSize = 9999999, articleType, ...restProps } = payload;
       const { status, data, total } = yield call(query, {
-        type: getAricleType(),
+        type: getAricleType() || articleType,
         pageNum,
         pageSize,
-        status: 1
+        status: 1,
+        ...restProps,
       });
       if (status === 200) {
+        let _data = data.data;
         yield put({
           type: 'setState',
-          payload:{
+          payload: {
             dataSource: data.data,
-            pagination:{
+            pagination: {
               current: pageNum,
               showTotal: (total: any) => `共 ${total} 条记录`,
               pageSize,
               total: data.total,
-            }
-          }
-        })
+            },
+          },
+        });
+        if (_.isFunction(back)){
+          back();
+        }
       }
     },
   },
 
   reducers: {
     setState(state, action) {
-      return { ...state, ...action.payload }
+      return { ...state, ...action.payload };
     },
   },
 };

@@ -28,7 +28,7 @@ export interface ModelType {
   };
 }
 
-const PATH = 'groups';
+const PATH = 'admin/groups';
 
 // @ts-ignore
 // @ts-ignore

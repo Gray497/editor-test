@@ -1,31 +1,24 @@
-import React, { Fragment } from 'react';
+import React  from 'react';
 import styles from './index.less';
-import { Layout, Menu, Popover, Badge, List, Avatar, ConfigProvider } from 'antd';
+import { Layout, Menu, Avatar, ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
   VideoCameraOutlined,
-  UploadOutlined,
-  BellOutlined,
-  RightOutlined,
 } from '@ant-design/icons';
-import { NavLink } from 'react-router-dom';
-import { connect, Link } from 'umi';
-import moment from 'moment';
+import { connect, Link, Redirect } from 'umi';
 import { articleTypes } from '@/utils/constants';
-import wwwLogo from '../pages/www/assets/logo.png';
 
 
 const { SubMenu } = Menu;
 
-var timer;
 
 const getMenuData = () => [
-  { Icon: UserOutlined, label: '首页', route: '/index/dashboard', type: 999, },
+  { Icon: UserOutlined, label: '首页', route: '/dashboard', },
   ...articleTypes,
-  { Icon: VideoCameraOutlined, label: '分组类型', route: '/group', type: 998, },
+  { Icon: VideoCameraOutlined, label: '分组类型', route: '/groups', },
 ];
 
 const { Header, Sider, Content } = Layout;
@@ -54,88 +47,42 @@ export default class BasicLayout extends React.Component {
 
 
     // @ts-ignore
-    const { children, location, dispatch, _model, history }  = this.props;
-    const { type, wwwType, groupId } = location.query;
+    const { children, location, dispatch }  = this.props;
+    const { type } = location.query;
     // const {setState} = this;
-    const _this = this;
-    const {picShow} = this.state;
-    const {group = {}} = _model;
-
-    if (!document.onclick){
-      document.onclick = function(){
-        if (!!timer){
-          clearTimeout(timer)
-        }
-        timer = setTimeout(() => {
-          console.log(123)
-          _this.setState({
-            picShow: true,
-          })
-        }, 6 * 60 * 1000)
-      }
-    }
-
-    if (!timer){
-      timer = setTimeout(() => {
-        console.log(123)
-        _this.setState({
-          picShow: true,
-        })
-      }, 6 * 60 * 1000)
-    }
-
-    if (picShow){
-      return <div className={styles.screenBg}>
-        <div className={styles.screenTitle}>清远市清新区退役军人事务局</div>
-        <div className={styles.screenSecondTitle}>欢迎您</div>
-        <div className={styles.btn} onClick={()=>{
-          _this.setState({
-            picShow: false
-          })
-        }}>点击查看更多》</div>
-        {/*<img src={screenPic} style={{width: '100vw', height: '100vh'}} onClick={()=>{*/}
-        {/*  _this.setState({*/}
-        {/*    picShow: false*/}
-        {/*  })*/}
-        {/*}} alt=""/>*/}
-      </div>
-    }
 
     if (location.pathname === '/'){
-      history.push('/index/dashboard');
+      return <Redirect to={'/dashboard'}/>;
     }
 
     if (location.pathname === '/login') {
-      return children;
+      return <Redirect to={'/dashboard'}/>;
     }
 
     if (location.pathname.startsWith('/www')) {
-      return <div className={styles.wwwWrap}>
-        <div className={styles.top}>
-          <img src={wwwLogo} style={{ width: 126, height: 76, marginRight: 20}} alt=""/>
-          {/*<div style={{ width: 126, height: 76, marginRight: 20, background: '#aaaaaa' }}></div>*/}
-          <div className={styles.title}>
-            <div>
-              { (getMenuData().find(val => {
-                // console.log(val)
-                return val.type.toString() === wwwType
-              }) || {}).label || '清远市清新区退役军人事务局'}
-              {!!groupId && `-${group.groupName}`}
-            </div>
-            {location.pathname !== '/www' && <div className={styles.back} onClick={() => {
-              history.go(-1);
-              // history.push(`/www${(getMenuData().find(val => {
-              //   return val.type.toString() === wwwType
-              // }) || {}).route}?wwwType=${wwwType}`)
-            }}>
-              返回上级
-            </div>}
-          </div>
-        </div>
-        <div className={styles.wwwContent}>
-          {children}
-        </div>
-      </div>;
+      // return <div className={styles.wwwWrap}>
+      //   <div className={styles.top}>
+      //     <img src={wwwLogo} style={{ width: 126, height: 76, marginRight: 20}} alt=""/>
+      //     {/*<div style={{ width: 126, height: 76, marginRight: 20, background: '#aaaaaa' }}></div>*/}
+      //     <div className={styles.title}>
+      //       <div>
+      //         { (getMenuData().find(val => {
+      //           // console.log(val)
+      //           return val.type.toString() === wwwType
+      //         }) || {}).label || '清远市清新区退役军人事务局'}
+      //         {!!groupId && `-${group.groupName}`}
+      //       </div>
+      //       {location.pathname !== '/www' && <div className={styles.back} onClick={() => {
+      //         history.go(-1);
+      //       }}>
+      //         返回上级
+      //       </div>}
+      //     </div>
+      //   </div>
+      //   <div className={styles.wwwContent}>
+      //     {children}
+      //   </div>
+      // </div>;
     }
 
     return <div>
@@ -145,9 +92,13 @@ export default class BasicLayout extends React.Component {
             <div className={styles.logo}/>
             {location.pathname}
             <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]}>
-              {getMenuData().map(({ Icon, label, route, type }, index) => <Menu.Item key={`${route}/${type}`} icon={<Icon />}>
-                  <Link to={`${route}/${type}`} key={index}>{label}-管理</Link>
+              {getMenuData().map(({ Icon, label, route, type }, index) =>
+              {
+                const _route = `/admin${route}${type ? `/${type}` : ''}`
+                return <Menu.Item key={_route} icon={<Icon />}>
+                  <Link to={_route} key={index}>{label}-管理</Link>
                 </Menu.Item>
+              }
               )}
               <Menu.Item icon={<VideoCameraOutlined/>}>
                 <Link to={'/www'}>前台页面</Link>

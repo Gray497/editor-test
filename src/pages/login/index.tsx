@@ -1,8 +1,6 @@
 import React, { PureComponent, Fragment } from 'react'
-import PropTypes from 'prop-types'
 import { connect, Redirect } from 'umi'
 import { Button, Row, Input, Form } from 'antd'
-import { GithubOutlined } from '@ant-design/icons'
 // import { Trans, withI18n } from '@lingui/react'
 
 import styles from './index.less'

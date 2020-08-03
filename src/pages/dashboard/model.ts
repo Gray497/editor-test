@@ -17,7 +17,7 @@ export interface ModelType {
   };
 }
 
-const PATH = 'index/dashboard';
+const PATH = 'admin/dashboard';
 
 // @ts-ignore
 const Model: ModelType = {

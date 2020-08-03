@@ -44,7 +44,7 @@ function formatSeconds(value) {
 
 }
 
-const PATH = 'index/dashboard';
+const PATH = 'admin/dashboard';
 // @ts-ignore
 @connect(({ [PATH]: _model }, dispatch) => ({
   // dispatch,

@@ -29,7 +29,7 @@ export interface ModelType {
   };
 }
 
-const PATH = 'www/articles1232';
+const PATH = 'admin/articles';
 
 function getAricleType(pathname = window.location.pathname) {
   const match = pathToRegexp(`/${PATH}/:id`).exec(pathname);

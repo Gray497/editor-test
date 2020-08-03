@@ -1,90 +1,95 @@
 
-.wrap {
-  .content {
-    .content1 {
-      .itemWrap();
 
-      .item1 {
-        width: 820px;
-        height: 350px;
-        background-image: url("./assets/革命先烈.png");
-        background-size: 100% 100%;
-      }
+.top {
+  padding: 20px 50px 20px;
+  display: flex;
+  align-items: center;
+  width: 100%;
 
-      .item2 {
-        margin-left: 20px;
-        width: 420px;
-        height: 350px;
-        background-image: url("./assets/立功受奖.png");
-        background-size: 100% 100%;
-      }
-    }
+  .title {
+    font-size: 42px;
+    //font-family:FZSongHei-B07;
+    font-weight: 400;
+    letter-spacing: 3px;
+    color: rgba(145, 25, 25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
 
-    .content2 {
-      margin-top: 10px;
-      .itemWrap();
-      justify-content: space-between;
-      flex-wrap: wrap;
+  .back {
+    font-size: 24px;
+    font-weight: 400;
+    padding: 5px 28px;
+    color: rgba(145, 25, 25, 1);
+    border: 2px solid rgba(145, 25, 25, 1);
+    border-radius: 25px;
+    min-width: 168px;
+  }
 
-      .itemBottom {
-        //width: 70px;
-        width: 230px;
-        height: 230px;
-        margin-bottom: 25px;
-        background-size: 100% 100%;
-      }
+  //.back:hover {
+  //  color: #FFFFFF;
+  //  background-color: rgba(145, 25, 25, 1);
+  //}
+}
 
-      a:nth-child(1) {
-        .itemBottom {
-          background-image: url("./assets/革命先烈.png");
-        }
-      }
-      a:nth-child(2) {
-        .itemBottom {
-          background-image: url("./assets/立功受奖.png");
-        }
-      }
-      a:nth-child(3) {
-        .itemBottom {
-          background-image: url("./assets/创业先锋.png");
-        }
-      }
-      a:nth-child(4) {
-        .itemBottom {
-          background-image: url("./assets/政策文件.png");
-        }
-      }
-      a:nth-child(5) {
-        .itemBottom {
-          background-image: url("./assets/办事流程.png");
-        }
-      }
-      a:nth-child(6) {
-        .itemBottom {
-          background-image: url("./assets/参军入伍.png");
-        }
-      }
+.wwwWrap {
+  height: 100vh;
+  background-image: url("./assets/页面背景.png");
+  //background-color: #FFFFFF;
+  overflow: hidden;
 
-      //.itemBottom + .itemBottom{
-      //  margin-left: 20px;
-      //}
-    }
+  .wwwContent {
+    padding: 0 55px;
+    height: calc(100vh - 121px);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 
-    .item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-bottom: 20px;
-      font-size: 28px;
-      color: rgba(251, 231, 175, 1);
-      //background-color: #aaaaaa;
+  :global {
+    ::-webkit-scrollbar {
+      width: 0;
     }
   }
 }
 
-.itemWrap {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  //padding: 50px;
+.screenBg {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("./assets/screenPic.jpg");
+  background-size: 100% 100%;
+  text-align: center;
+
+  .screenTitle {
+    padding-top: 120px;
+    //position: absolute;
+    //top: 284px;
+    font-size: 36px;
+    font-weight: 400;
+    color: rgba(145, 25, 25, 1);
+    letter-spacing: 4px;
+  }
+
+  .screenSecondTitle {
+    padding-top: 10px;
+    font-size: 60px;
+    font-weight: 600;
+    color: rgba(145, 25, 25, 1);
+    letter-spacing: 16px;
+  }
+
+  .btn {
+    width: 300px;
+    height: 50px;
+    background-color: rgba(145, 25, 25, 1);
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 16px;
+    margin: 40px auto 0;
+  }
 }

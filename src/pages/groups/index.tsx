@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useHistory, useLocation, useDispatch } from 'umi';
 import CommonTable from '@/components/CommonTable';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, Select, Modal, Form, Input, Space, Upload, message, Row, Col } from 'antd';
+import { Button, Select, Modal, Form, Input, Space, Upload, message } from 'antd';
 import styles from './index.less';
 import { getGoToFilterURL } from '@/utils/help';
 import { articleTypes } from '@/utils/constants';
@@ -12,7 +12,7 @@ import config from '@/utils/config';
 
 const Option = Select.Option;
 const { confirm } = Modal;
-const PATH = 'groups';
+const PATH = 'admin/groups';
 
 export default function Group() {
 
@@ -22,7 +22,6 @@ export default function Group() {
   const [editRecord, setEditRecord] = useState({});
   const [cover, setCover] = React.useState('');
   const history = useHistory();
-  const location = useLocation();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
@@ -74,7 +73,6 @@ export default function Group() {
         render(value, record) {
           return <Space size="middle">
             <a onClick={() => {
-              // console.log()
               dispatch({
                 type: `${PATH}/setTop`,
                 payload: {

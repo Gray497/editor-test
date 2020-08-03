@@ -8,7 +8,7 @@
   //justify-content: space-between;
   .item {
     //background-color: #BD2321;
-    background-image: url("../assets/卡片背景.png");
+    background-image: url("../../assets/卡片背景.png");
     background-size: 100% 100%;
     border-radius: 1px;
     padding: 10px 10px;
@@ -58,44 +58,41 @@
   }
 }
 
-
-
-
-.groupWrap + .groupWrap{
-  margin-top: 20px;
-}
-
-.groupName {
-  font-size: 42px;
-  font-weight: 400;
-  //color: rgba(255, 255, 255, 1);
-  color: red;
-  margin-bottom: 40px;
-  display: flex;
-  //align-items: baseline;
-}
-
-
-.tag1{
-  width: 60px;
-  height: 60px;
-  background:rgba(145,25,25,0.3);
-  position: relative;
-  margin-right: 7px;
-}
-.tag2{
-  top: 8px;
-  left: 8px;
-  width: 60px;
-  height: 60px;
-  background:rgba(145,25,25,1);
-  position: absolute;
-}
-
-.groupNameLabel{
-  margin-left: 7px;
-  padding: 0 90px 2px 30px;
-  //height: 60px;
-  color: #FFFFFF;
-  background:linear-gradient(90deg,rgba(145,25,25,1) 0%,rgba(145,25,25,0) 100%);
-}
+  .cubeCardItem{
+    padding: 0 !important;
+    .pic{
+      min-height: 120px !important;
+      width: 100% !important;
+      border-radius: 0 !important;
+    }
+    .image{
+      background-size: 100% 100%;
+    }
+    .title{
+      padding: 0 10px;
+    }
+    .desc{
+      padding: 0 10px;
+    }
+  }
+  .gmxlCardItem{
+    .image{
+      background-image: url("../../assets/zhongxin.png");
+      background-size: 100% 100%;
+    }
+  }
+  .zcwjCardItem{
+    .image{
+      background-image: url("../../assets/default-zcwj.jpg");
+    }
+  }
+  .bslcCardItem{
+    .image{
+      background-image: url("../../assets/default-bslc.jpg");
+    }
+  }
+  .cjrwCardItem{
+    .image{
+      background-image: url("../../assets/default-cjrw.jpg");
+    }
+  }
