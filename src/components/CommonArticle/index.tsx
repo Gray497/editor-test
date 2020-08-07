@@ -63,7 +63,7 @@ export default class Index extends React.Component {
   };
 
   render() {
-    const { location: { query }, _model: { pagination }, history, dispatch, PATH, app: { groups } } = this.props;
+    const { location: { query }, _model: { pagination, articleType }, history, dispatch, PATH, app: { groups } } = this.props;
     // console.log(app)
     const { dataSource } = this.state;
     const { id, type } = query;
@@ -164,7 +164,8 @@ export default class Index extends React.Component {
         key: 'op',
         render(value: string, record: object) {
           return <Space size="middle">
-            <a href={`./www/articleDetail?id=${record.id}`} target='_blank'>预览</a>
+          {/* <a href={`./www/articleDetail?id=${record.id}`} target='_blank'>预览</a> */}
+            <a href={`/www/articleDetail?id=${record.id}&articleType=${articleType}`} target='_blank'>预览</a>
             <a onClick={() => {
               // console.log()
               dispatch({

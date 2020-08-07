@@ -16,7 +16,7 @@ const { SubMenu } = Menu;
 
 
 const getMenuData = () => [
-  { Icon: UserOutlined, label: '首页', route: '/dashboard', },
+  { Icon: UserOutlined, label: '首页', route: '/admin/dashboard', },
   ...articleTypes,
   { Icon: VideoCameraOutlined, label: '分组类型', route: '/groups', },
 ];
@@ -101,7 +101,7 @@ export default class BasicLayout extends React.Component {
               }
               )}
               <Menu.Item icon={<VideoCameraOutlined/>}>
-                <Link to={'/www'}>前台页面</Link>
+                <Link to={'/www/dashboard'}>前台页面</Link>
               </Menu.Item>
             </Menu>
           </Sider>
@@ -138,7 +138,7 @@ export default class BasicLayout extends React.Component {
               <Link to={location.pathname}>
                 {
                   // @ts-ignore
-                  getMenuData().find(val => val.route === location.pathname).label
+                  getMenuData().find(val => val.route === location.pathname) || {}.label
                 }
               </Link>
               <span className={styles.breadSplit}>/</span>
