@@ -16,7 +16,7 @@ const { SubMenu } = Menu;
 
 
 const getMenuData = () => [
-  { Icon: UserOutlined, label: '首页', route: '/admin/dashboard', },
+  { Icon: UserOutlined, label: '首页', route: '/dashboard', },
   ...articleTypes,
   { Icon: VideoCameraOutlined, label: '分组类型', route: '/groups', },
 ];
@@ -156,6 +156,7 @@ export default class BasicLayout extends React.Component {
             </Content>
           </Layout>
         </Layout></ConfigProvider>
+        <a target="_blank" href="http://beian.miit.gov.cn/">粤ICP备20019733号-1</a>
     </div>;
   }
 };
