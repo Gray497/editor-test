@@ -24,7 +24,7 @@ function getAricleType(pathname = window.location.pathname) {
 function renderItem(val, location, group) {
   const type = location.query.articleType || getAricleType();
   const articleConfig = _.find(articleTypes, val => val.type === type) || {};
-  console.log(articleConfig, articleConfig.cardClassName)
+  // console.log(articleConfig, articleConfig.cardClassName)
   return <Col key={val.id} span={6}>
     <Link to={`/www/articleDetail?id=${val.id}&articleType=${type}`}>
       <div className={classnames(styles.item, articleConfig.cardClassName)}>
