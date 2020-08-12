@@ -37,6 +37,10 @@ export default defineConfig({
   // },
   routes: [
     {
+      path: '/',
+      component: '../pages/index'
+    },
+    {
       path: '/admin',
       component: '../layouts/index',
       routes: [
